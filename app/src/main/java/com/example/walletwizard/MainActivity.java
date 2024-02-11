@@ -15,17 +15,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setFragmentListener();
-
-        // Load the initial fragment
         loadFragment(new HomeFragment());
+        setFragmentListener();
     }
 
     protected void setFragmentListener() {
         swichToFragmentListener(findViewById(R.id.map_button), new MapFragment());
         swichToFragmentListener(findViewById(R.id.home_button), new HomeFragment());
-        swichToFragmentListener(findViewById(R.id.convert_button), new HomeFragment());
-
+        swichToFragmentListener(findViewById(R.id.convert_button), new ConvertFragment());
     }
 
     // Method to load fragments
