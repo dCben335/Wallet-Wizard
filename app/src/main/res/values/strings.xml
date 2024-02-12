@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Wallet Wizard</string>
+
+    <string name="home_page_name">Home</string>
+    <string name="map_page_name">Map</string>
+    <string name="convert_page_name">Convert Money</string>
+
 </resources>
