@@ -8,6 +8,10 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
+import com.example.walletwizard.Fragment.ConvertFragment;
+import com.example.walletwizard.Fragment.HomeFragment;
+import com.example.walletwizard.Fragment.MapFragment;
+
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
