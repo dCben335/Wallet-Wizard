@@ -25,7 +25,6 @@ public class LocationHandler {
     private final Context context;
     private final MapFragment mapFragment;
     private final LocationManager locationManager;
-
     private static final int REQUEST_LOCATION_PERMISSION = 1001;
 
 
