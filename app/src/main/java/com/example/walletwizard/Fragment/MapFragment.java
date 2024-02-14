@@ -35,6 +35,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.Callable;
+
 public class MapFragment extends Fragment  {
     private View rootView;
     private String mapStyleUrl;
@@ -65,6 +67,12 @@ public class MapFragment extends Fragment  {
 
         locationHandler = new LocationHandler(context, this);
         locationHandler.startLocationUpdates();
+
+
+
+        rootView.findViewById(R.id.btn_locate).setOnClickListener((View.OnClickListener) v -> {
+            setCamera();
+        });
     }
 
     protected String initiateMapSettings() {
@@ -93,7 +101,7 @@ public class MapFragment extends Fragment  {
             map.removeMarker(ownMarker);
         }
 
-        Icon currentPositionIcon = getMarkerIcon(R.drawable.marker);
+        Icon currentPositionIcon = getMarkerIcon(R.drawable.my_position_marker);
         ownMarker = createMarker(currentPositionIcon, currentLatitude, currentLongitude, "Votre Position", "");
     }
 
@@ -111,7 +119,6 @@ public class MapFragment extends Fragment  {
     private void handleApiCall() {
         int resultPerPage = 500;
         String format = "json";
-
         String url = "http://api.worldbank.org/v2/country/all?per_page=" + resultPerPage + "&format=" + format;
         ApiCall.RequestType requestType = ApiCall.RequestType.ARRAY;
 
@@ -132,7 +139,7 @@ public class MapFragment extends Fragment  {
                     } else Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
 
 
-                } catch (JSONException e) {
+                } catch (JSONException | InterruptedException e) {
                     Toast.makeText(context, "All the bank were not displayed, please retry later" , Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
@@ -146,7 +153,7 @@ public class MapFragment extends Fragment  {
         }, context);
     }
 
-    private void addBankMarkers(JSONArray banks) throws JSONException {
+    private void addBankMarkers(JSONArray banks) throws JSONException, InterruptedException {
         for (int i = 0; i < banks.length(); i++) {
             JSONObject bank = banks.getJSONObject(i);
 
@@ -157,9 +164,9 @@ public class MapFragment extends Fragment  {
             double latitude = convertToDouble(bank.getString("latitude"));
 
             if (isLocation(longitude, latitude) && !TextUtils.isEmpty(title) && !TextUtils.isEmpty(city)) {
-                Icon currentPositionIcon = getMarkerIcon(R.drawable.marker);
+                Icon bankIcon = getMarkerIcon(R.drawable.bank_marker);
                 createMarker(
-                        currentPositionIcon,
+                        bankIcon,
                         latitude,
                         longitude,
                         title,
@@ -183,7 +190,7 @@ public class MapFragment extends Fragment  {
     private void setCamera() {
         double initialCameraLat = isCurrentLocation() ? currentLatitude : 1;
         double initialCameraLong = isCurrentLocation() ? currentLongitude : 1;
-        int initialZoom =  isCurrentLocation() ? 10 : 1;
+        int initialZoom =  isCurrentLocation() ? 5 : 1;
 
         map.setCameraPosition(new CameraPosition.Builder()
                 .target(new LatLng(initialCameraLat, initialCameraLong))
