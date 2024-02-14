@@ -12,11 +12,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.provider.Settings;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.walletwizard.Fragment.MapFragment;
 
@@ -36,7 +34,7 @@ public class LocationHandler {
 
     @SuppressLint("MissingPermission")
     public void startLocationUpdates() {
-        if (mapFragment.isLocation()) return;
+        if (mapFragment.isCurrentLocation()) return;
 
         if (!isLocationPermissionGranted()) {
             requestLocationPermission();
@@ -121,7 +119,7 @@ public class LocationHandler {
 
         @Override
         public void onProviderEnabled(String provider) {
-            if (mapFragment.isLocation()) return;
+            if (mapFragment.isCurrentLocation()) return;
             getLastKnowLocation();
             requestLocationUpdates();
         }

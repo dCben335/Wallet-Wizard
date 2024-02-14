@@ -10,6 +10,7 @@ import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,7 +81,7 @@ public class MapFragment extends Fragment  {
     protected void injectMap(String styleUrl) {
         mapView.getMapAsync(mapboxMap -> mapboxMap.setStyle(new Style.Builder().fromUrl(styleUrl), style -> {
             map = mapboxMap;
-            if (isLocation()) replaceOwnPositionMarker();
+            if (isCurrentLocation()) replaceOwnPositionMarker();
             setCamera();
 
             handleApiCall();
@@ -148,14 +149,41 @@ public class MapFragment extends Fragment  {
     private void addBankMarkers(JSONArray banks) throws JSONException {
         for (int i = 0; i < banks.length(); i++) {
             JSONObject bank = banks.getJSONObject(i);
-            Log.d("fdp" + i, String.valueOf(bank));
+
+            String title = bank.getString("name");
+            String city = bank.getString("capitalCity");
+
+            double longitude = convertToDouble(bank.getString("longitude"));
+            double latitude = convertToDouble(bank.getString("latitude"));
+
+            if (isLocation(longitude, latitude) && !TextUtils.isEmpty(title) && !TextUtils.isEmpty(city)) {
+                Icon currentPositionIcon = getMarkerIcon(R.drawable.marker);
+                createMarker(
+                        currentPositionIcon,
+                        latitude,
+                        longitude,
+                        title,
+                        "You can find this bank in the city of " + city
+                );
+            }
         }
     }
 
+    private double convertToDouble(String string) {
+        double value = 0.0;
+
+        if (!TextUtils.isEmpty(string)) {
+            value = Double.parseDouble(string);
+        }
+
+        return value;
+    }
+
+
     private void setCamera() {
-        double initialCameraLat = isLocation() ? currentLatitude : 1;
-        double initialCameraLong = isLocation() ? currentLongitude : 1;
-        int initialZoom =  isLocation() ? 10 : 1;
+        double initialCameraLat = isCurrentLocation() ? currentLatitude : 1;
+        double initialCameraLong = isCurrentLocation() ? currentLongitude : 1;
+        int initialZoom =  isCurrentLocation() ? 10 : 1;
 
         map.setCameraPosition(new CameraPosition.Builder()
                 .target(new LatLng(initialCameraLat, initialCameraLong))
@@ -176,37 +204,24 @@ public class MapFragment extends Fragment  {
     }
 
     private Marker createMarker(Icon customMarkerIcon, double latitude, double longitude, String title, String description) {
-        return addMarker(
-            new LatLng(latitude, longitude),
-            title,
-            description,
-            customMarkerIcon
-        );
-    }
-
-    private Marker addMarker(LatLng latLng, String title, String description, Icon icon) {
         MarkerOptions markerOptions = new MarkerOptions()
-                .position(latLng)
+                .position(new LatLng(latitude, longitude))
                 .title(title)
                 .snippet(description)
-                .icon(icon);
+                .icon(customMarkerIcon);
 
-        Marker newMarker = map.addMarker(markerOptions);
 
-        map.setOnMarkerClickListener(marker -> {
-            marker.showInfoWindow(map, mapView);
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 12.0));
-            return true;
-        });
-
-        return newMarker;
+        return map.addMarker(markerOptions);
     }
 
-
-
-    public boolean isLocation() {
-        return currentLatitude != 0.0 && currentLongitude != 0.0;
+    public boolean isCurrentLocation() {
+        return isLocation(currentLatitude, currentLongitude);
     }
+
+    private boolean isLocation(double latitude, double longitude) {
+        return latitude != 0.0 && longitude != 0.0;
+    }
+
 
     @Override
     public void onStart() {
