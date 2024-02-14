@@ -3,6 +3,8 @@ package com.example.walletwizard.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.example.walletwizard.Utils.ApiCall;
 import com.example.walletwizard.Utils.LocationHandler;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
@@ -12,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.walletwizard.R;
@@ -25,7 +29,10 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import java.text.DecimalFormat;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MapFragment extends Fragment  {
     private View rootView;
@@ -38,7 +45,6 @@ public class MapFragment extends Fragment  {
 
     public LocationHandler locationHandler;
     private Marker ownMarker;
-    private Marker openedMarker;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = requireContext();
@@ -76,6 +82,8 @@ public class MapFragment extends Fragment  {
             map = mapboxMap;
             if (isLocation()) replaceOwnPositionMarker();
             setCamera();
+
+            handleApiCall();
         }));
     }
 
@@ -99,16 +107,72 @@ public class MapFragment extends Fragment  {
         }
     }
 
+    private void handleApiCall() {
+        int resultPerPage = 500;
+        String format = "json";
+
+        String url = "http://api.worldbank.org/v2/country/all?per_page=" + resultPerPage + "&format=" + format;
+        ApiCall.RequestType requestType = ApiCall.RequestType.ARRAY;
+
+        ApiCall.handleRequest(requestType, url, new ApiCall.ApiCallback() {
+            @Override
+            public void onSuccess(Object response) {
+                try {
+                    if (response instanceof JSONArray) {
+                        JSONArray bankArray = ((JSONArray) response).getJSONArray(1);
+
+                        if (bankArray == null) {
+                            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        addBankMarkers(bankArray);
+
+                    } else Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+
+
+                } catch (JSONException e) {
+                    Toast.makeText(context, "All the bank were not displayed, please retry later" , Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(context, "API call failed, please try again later" + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+
+        }, context);
+    }
+
+    private void addBankMarkers(JSONArray banks) throws JSONException {
+        for (int i = 0; i < banks.length(); i++) {
+            JSONObject bank = banks.getJSONObject(i);
+            Log.d("fdp" + i, String.valueOf(bank));
+        }
+    }
+
     private void setCamera() {
         double initialCameraLat = isLocation() ? currentLatitude : 1;
         double initialCameraLong = isLocation() ? currentLongitude : 1;
-        int initalZoom =  isLocation() ? 10 : 1;
+        int initialZoom =  isLocation() ? 10 : 1;
 
         map.setCameraPosition(new CameraPosition.Builder()
                 .target(new LatLng(initialCameraLat, initialCameraLong))
-                .zoom(initalZoom)
+                .zoom(initialZoom)
                 .build()
         );
+    }
+
+
+    private Icon getMarkerIcon(int src) {
+        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), src);
+
+        int width = 50;
+        int height = 50;
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, width, height, false);
+
+        return IconFactory.getInstance(context).fromBitmap(resizedBitmap);
     }
 
     private Marker createMarker(Icon customMarkerIcon, double latitude, double longitude, String title, String description) {
@@ -136,15 +200,6 @@ public class MapFragment extends Fragment  {
         });
 
         return newMarker;
-    }
-    private Icon getMarkerIcon(int src) {
-        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), src);
-
-        int width = 50;
-        int height = 50;
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, width, height, false);
-
-        return IconFactory.getInstance(context).fromBitmap(resizedBitmap);
     }
 
 
