@@ -1,4 +1,4 @@
-package com.example.walletwizard.Fragment;
+package com.example.walletwizard.Fragments;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,7 +11,6 @@ import com.mapbox.mapboxsdk.annotations.IconFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.mapbox.mapboxsdk.WellKnownTileServer;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
@@ -34,8 +32,6 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.concurrent.Callable;
 
 public class MapFragment extends Fragment  {
     private View rootView;
@@ -52,10 +48,10 @@ public class MapFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = requireContext();
         mapStyleUrl = initiateMapSettings();
-        rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        return rootView;
+        return rootView = inflater.inflate(R.layout.fragment_map, container, false);
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -67,8 +63,6 @@ public class MapFragment extends Fragment  {
 
         locationHandler = new LocationHandler(context, this);
         locationHandler.startLocationUpdates();
-
-
 
         rootView.findViewById(R.id.btn_locate).setOnClickListener((View.OnClickListener) v -> {
             setCamera();
