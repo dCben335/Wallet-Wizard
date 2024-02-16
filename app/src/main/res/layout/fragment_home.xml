@@ -6,42 +6,43 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     >
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/entityLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+    >
 
-        <!-- Add a Spinner (Dropdown) for entity selection -->
         <Spinner
             android:id="@+id/entitySpinner"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"/>
+        />
 
-        <!-- Add CheckBoxes for each entity -->
         <GridLayout
             android:id="@+id/checkBoxLayout"
-            android:layout_width="match_parent"
+            android:paddingTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/entitySpinner"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:columnCount="4"
-            android:orientation="horizontal"
-            android:padding="16dp">
-
+            android:orientation="horizontal">
         </GridLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/chartLayout"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_alignParentBottom="true">
+        android:layout_below="@+id/entityLayout">
 
         <!-- Ui component for our bar chart -->
         <com.github.mikephil.charting.charts.BarChart

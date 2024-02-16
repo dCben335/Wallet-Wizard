@@ -42,10 +42,11 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     HashMap<String, JSONObject> stringJsonObject = new HashMap<>();
+
+    List<BarEntry> barEntriesList = new ArrayList<>();;
     BarChart barChart;
-    BarData barData;
+    BarData barData ;
     BarDataSet barDataSet;
-    List<BarEntry> barEntriesList;
 
     private Context context;
     private View rootView;
@@ -58,7 +59,6 @@ public class HomeFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         barChart = rootView.findViewById(R.id.idBarChart);
-        barEntriesList = new ArrayList<>();
         barDataSet = new BarDataSet(barEntriesList, "Exchange rates against the euro");
 
         barData = new BarData(barDataSet);
@@ -109,6 +109,8 @@ public class HomeFragment extends Fragment {
         GridLayout checkboxLayout = rootView.findViewById(R.id.checkBoxLayout);
         Spinner entitySpinner = rootView.findViewById(R.id.entitySpinner);
 
+
+
         String[] currencies = new String[devises.length()];
 
         for (int i = 0; i < devises.length(); i++) {
@@ -116,6 +118,8 @@ public class HomeFragment extends Fragment {
             String codeISODevise = devise.getString("codeISODevise");
             currencies[i] = codeISODevise;
         }
+
+
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, currencies);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -219,8 +223,14 @@ public class HomeFragment extends Fragment {
     private void setCheckboxListener(CheckBox checkBox) {
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                Toast.makeText(context,checkBox.getText() + " CheckBox Checked", Toast.LENGTH_SHORT).show();
-                addBarToChart(checkBox.getText().toString());
+
+                try {
+                    addBarToChart(checkBox.getText().toString());
+                    Toast.makeText(context,checkBox.getText() + " CheckBox Checked", Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             } else {
                 Toast.makeText(context, checkBox.getText() + " CheckBox Unchecked", Toast.LENGTH_SHORT).show();
@@ -239,7 +249,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void addBarToChart(String codeISODevise) {
+    private void addBarToChart(String codeISODevise) throws JSONException {
         for (BarEntry entry : barEntriesList) {
             // Si La barre est déjà présente, ne rien faire
             if (entry.getData().toString().equals(codeISODevise)) {
@@ -248,16 +258,11 @@ public class HomeFragment extends Fragment {
         }
 
         JSONObject jsonObject = stringJsonObject.get(codeISODevise);
-        float taux = 0f;
 
-        try {
-            taux = (float) jsonObject.getDouble("taux");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        float taux = 0f;
+        taux = (float) jsonObject.getDouble("taux");
 
         barEntriesList.add(new BarEntry(barEntriesList.size(), taux, codeISODevise));
-
         updateChart();
     }
 

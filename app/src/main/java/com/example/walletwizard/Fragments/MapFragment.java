@@ -60,7 +60,6 @@ public class MapFragment extends Fragment  {
         mapView.onCreate(savedInstanceState);
 
         injectMap(mapStyleUrl);
-
         locationHandler = new LocationHandler(context, this);
         locationHandler.startLocationUpdates();
 
