@@ -1,11 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.WalletWizard" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="actionBarStyle">@color/primary_800</item>
-
-        <!-- ...and here we setting appcompat’s color theming attrs -->
-        <item name="colorPrimary">@color/primary_900</item>
-        <item name="colorPrimaryDark">@color/primary_950</item>
+        <item name="android:navigationBarColor">@color/primary_900</item>
+        <item name="actionBarStyle">@color/primary_600</item>
+        <item name="colorPrimary">@color/primary_600</item>
+        <item name="colorPrimaryDark">@color/primary_600</item>
     </style>
 
 </resources>
