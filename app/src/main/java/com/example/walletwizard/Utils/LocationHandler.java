@@ -16,7 +16,7 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
-import com.example.walletwizard.Fragment.MapFragment;
+import com.example.walletwizard.Fragments.MapFragment;
 
 public class LocationHandler {
 

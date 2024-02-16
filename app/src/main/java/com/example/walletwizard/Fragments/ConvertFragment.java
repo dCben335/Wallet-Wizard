@@ -1,4 +1,4 @@
-package com.example.walletwizard.Fragment;
+package com.example.walletwizard.Fragments;
 
 import android.os.Bundle;
 

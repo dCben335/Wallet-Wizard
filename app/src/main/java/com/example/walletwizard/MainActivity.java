@@ -8,13 +8,22 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
-import com.example.walletwizard.Fragment.ConvertFragment;
-import com.example.walletwizard.Fragment.HomeFragment;
-import com.example.walletwizard.Fragment.MapFragment;
+import com.example.walletwizard.Fragments.ConvertFragment;
+import com.example.walletwizard.Fragments.HomeFragment;
+import com.example.walletwizard.Fragments.MapFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final MapFragment mapFragment = new MapFragment();
+    private final HomeFragment homeFragment = new HomeFragment();
+    private final ConvertFragment convertFragment = new ConvertFragment();
+    private final FragmentManager fragmentManager = getSupportFragmentManager();
+
+
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -23,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setFragmentButtonListeners() {
-        setFragmentButtonListener(findViewById(R.id.map_button), new MapFragment());
-        setFragmentButtonListener(findViewById(R.id.home_button), new HomeFragment());
-        setFragmentButtonListener(findViewById(R.id.convert_button), new ConvertFragment());
+        setFragmentButtonListener(findViewById(R.id.map_button), mapFragment);
+        setFragmentButtonListener(findViewById(R.id.home_button), homeFragment);
+        setFragmentButtonListener(findViewById(R.id.convert_button), convertFragment);
     }
 
 
@@ -34,9 +43,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
+
+        Fragment existingFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (existingFragment != null && existingFragment.getClass().equals(fragment.getClass())) {
+            // If the fragment is already added, just show it
+            fragmentTransaction.show(existingFragment);
+        } else {
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+        }
+
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
