@@ -1,13 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.WalletWizard" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-
-        <item name="actionBarStyle">@color/primary_800</item>
-
-        <item name="colorPrimary">@color/primary_900</item>
-        <item name="colorPrimaryDark">@color/primary_700</item>
+        <item name="android:navigationBarColor">@color/primary_900</item>
+        <item name="actionBarStyle">@color/primary_600</item>
+        <item name="colorPrimary">@color/primary_600</item>
+        <item name="colorPrimaryDark">@color/primary_600</item>
     </style>
 
 </resources>

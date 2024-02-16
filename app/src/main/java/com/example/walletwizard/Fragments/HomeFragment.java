@@ -41,41 +41,37 @@ import java.util.List;
 
 
 public class HomeFragment extends Fragment {
-    HashMap<String, JSONObject> stringJsonObject = new HashMap<>();
+    private HashMap<String, JSONObject> stringJsonObject = new HashMap<>();
+    private List<BarEntry> barEntriesList = new ArrayList<>();
 
-    List<BarEntry> barEntriesList = new ArrayList<>();;
-    BarChart barChart;
-    BarData barData ;
-    BarDataSet barDataSet;
+    private BarChart barChart;
+    private BarDataSet barDataSet = new BarDataSet(barEntriesList, "Exchange rates against the euro");
+    private BarData barData = new BarData(barDataSet);
 
     private Context context;
     private View rootView;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = requireContext();
-
         return rootView = inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        barChart = rootView.findViewById(R.id.idBarChart);
-        barDataSet = new BarDataSet(barEntriesList, "Exchange rates against the euro");
-
-        barData = new BarData(barDataSet);
-
-        barChart.setData(barData);
-
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-
-        barDataSet.setValueTextColor(Color.BLACK);
-
-        barDataSet.setValueTextSize(16f);
-        barChart.getDescription().setEnabled(false);
+        setChart();
         handleAPICall();
     }
 
+    protected void setChart() {
+        barChart = rootView.findViewById(R.id.idBarChart);
+        barChart.setData(barData);
+        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(16f);
+        barChart.getDescription().setEnabled(false);
+    }
 
-    private void handleAPICall() {
+
+    protected void handleAPICall() {
         String url = "https://happyapi.fr/api/devises";
         ApiCall.RequestType requestType = ApiCall.RequestType.OBJECT;
 
@@ -83,15 +79,11 @@ public class HomeFragment extends Fragment {
             public void onSuccess(Object response) {
                 if (response instanceof JSONObject) {
                     try {
-
                         JSONObject data = ((JSONObject) response);
-
                         getBarEntriesFromAPI(data);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
                 } else Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
             }
 
@@ -224,17 +216,13 @@ public class HomeFragment extends Fragment {
 
     private List<String> getLabels() {
         List<String> labels = new ArrayList<>();
+
         for (BarEntry entry : barEntriesList) {
             labels.add(entry.getData().toString());
         }
-        System.out.println(labels);
+
         return labels;
     }
-
-
-
-
-
 
 
 
