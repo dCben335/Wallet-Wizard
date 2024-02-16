@@ -48,21 +48,26 @@ public class ConvertFragment extends Fragment {
         Spinner toCurrencySpinner = rootView.findViewById(R.id.spinner_to_currency);
 
 
-
-        // Ajouter un écouteur d'événements au spinner de départ
         fromCurrencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+
+
+
+
                 String selectedFromCurrency = (String) parentView.getItemAtPosition(position);
                 String selectedToCurrency = (String) toCurrencySpinner.getSelectedItem();
-                String inputValueString = String.valueOf(inputEditPrice.getEditText().getText());
 
-                Toast.makeText(context, "value: " + inputValueString, Toast.LENGTH_SHORT).show();
-                resultTextView.setText(inputValueString);
-                //double inputValue = Double.parseDouble(inputValueString);
+                String textInputEditText = Objects.requireNonNull(inputEditPrice.getEditText()).getText().toString();
+                Toast.makeText(context, "value: " + textInputEditText, Toast.LENGTH_SHORT).show();
+
+                double inputValue = Double.parseDouble(textInputEditText);
 
                 try {
                     double exchangeRate = findExchangeRate(devises, selectedFromCurrency, selectedToCurrency);
+                    Toast.makeText(context, "e: " + exchangeRate, Toast.LENGTH_SHORT).show();
+
                     //resultTextView.setText((int) convertCurrency(inputValue,exchangeRate));
                     exchangeRateTextView.setText(String.valueOf(exchangeRate));
                 } catch (JSONException ex) {
