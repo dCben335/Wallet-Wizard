@@ -76,7 +76,6 @@ public class HomeFragment extends Fragment {
 
 
     private void handleAPICall() {
-
         String url = "https://happyapi.fr/api/devises";
         ApiCall.RequestType requestType = ApiCall.RequestType.OBJECT;
 
@@ -84,7 +83,9 @@ public class HomeFragment extends Fragment {
             public void onSuccess(Object response) {
                 if (response instanceof JSONObject) {
                     try {
+
                         JSONObject data = ((JSONObject) response);
+
                         getBarEntriesFromAPI(data);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -100,30 +101,18 @@ public class HomeFragment extends Fragment {
         }, context);
     }
 
-    private void getBarEntriesFromAPI(JSONObject response) throws JSONException {
-        JSONArray devises = response
+    private void getBarEntriesFromAPI(JSONObject data) throws JSONException {
+        JSONArray devises = data
                 .getJSONObject("result")
                 .getJSONObject("result")
                 .getJSONArray("devises");
 
+        setupCurrencySpinner(devises);
+
+
+
         GridLayout checkboxLayout = rootView.findViewById(R.id.checkBoxLayout);
-        Spinner entitySpinner = rootView.findViewById(R.id.entitySpinner);
 
-
-
-        String[] currencies = new String[devises.length()];
-
-        for (int i = 0; i < devises.length(); i++) {
-            JSONObject devise = devises.getJSONObject(i);
-            String codeISODevise = devise.getString("codeISODevise");
-            currencies[i] = codeISODevise;
-        }
-
-
-
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, currencies);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        entitySpinner.setAdapter(spinnerAdapter);
 
         List<JSONObject> devisesList = new ArrayList<>();
         List<CheckBox> checkBoxList = new ArrayList<>();
@@ -132,7 +121,7 @@ public class HomeFragment extends Fragment {
 
         for (int i = 0; i < devises.length(); i++) {
             JSONObject devise = devises.getJSONObject(i);
-            stringJsonObject.put(devise.getString("codeISODevise"),devise);
+            stringJsonObject.put(devise.getString("codeISODevise"), devise);
             CheckBox checkBox = new CheckBox(context);
             checkBox.setId(View.generateViewId());
             checkBox.setText(devise.getString("codeISODevise"));
@@ -143,7 +132,6 @@ public class HomeFragment extends Fragment {
                 checkBox.setChecked(true);
             }
             setCheckboxListener(checkBox);
-
             checkboxLayout.addView(checkBox);
         }
 
@@ -170,9 +158,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        System.out.println("devises");
-        System.out.println(devises);
-
         // Clear existing entries
         barEntriesList.clear();
 
@@ -182,8 +167,6 @@ public class HomeFragment extends Fragment {
             float taux = (float) devise.getDouble("taux");
             String codeISODevise = devise.getString("codeISODevise");
             barEntriesList.add(new BarEntry(i + 0f, taux, codeISODevise));
-
-
         }
 
         System.out.println("Size of barEntriesList: " + barEntriesList.size());
@@ -249,6 +232,40 @@ public class HomeFragment extends Fragment {
     }
 
 
+
+
+
+
+
+
+    private void setupCurrencySpinner(JSONArray devises) throws JSONException {
+        Spinner entitySpinner = rootView.findViewById(R.id.entitySpinner);
+
+        String[] currencies = extractCodeISODevise(devises);
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, currencies);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        entitySpinner.setAdapter(spinnerAdapter);
+    }
+
+
+
+    private static String[] extractCodeISODevise(JSONArray jsonArray) throws JSONException {
+        String[] currencies = new String[jsonArray.length()];
+
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject devise = jsonArray.getJSONObject(i);
+            String codeISODevise = devise.getString("codeISODevise");
+            currencies[i] = codeISODevise;
+        }
+
+        return currencies;
+    }
+
+
+
+
     private void addBarToChart(String codeISODevise) throws JSONException {
         for (BarEntry entry : barEntriesList) {
             // Si La barre est déjà présente, ne rien faire
@@ -282,6 +299,4 @@ public class HomeFragment extends Fragment {
         barDataSet.notifyDataSetChanged();
         barChart.invalidate();
     }
-
-
 }
