@@ -11,7 +11,6 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         >
 
         <RelativeLayout
@@ -53,7 +52,7 @@
                 android:id="@+id/idBarChart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+            />
         </LinearLayout>
 
     </RelativeLayout>
