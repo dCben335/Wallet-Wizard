@@ -178,33 +178,29 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String deviseSearched = (String) parentView.getItemAtPosition(position);
-                for (int i = 0; i < devises.length(); i++) {
-                    try {
+                try {
+                    for (int i = 0; i < devises.length(); i++) {
                         JSONObject devise = devises.getJSONObject(i);
                         String codeISODevise = devise.getString("codeISODevise");
-
                         if (codeISODevise.equals(deviseSearched)) {
                             baseExchangeRate = devise.getDouble("taux");
                             break;
                         }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        barEntriesList.clear();
                     }
-                }
-                barEntriesList.clear();
 
-                for (CheckBox checkBoxUnit : checkBoxList) {
-                    if (checkBoxUnit.isChecked()) {
-                        try {
-                            addBarToChart(checkBoxUnit.getText().toString());
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
+                    for (CheckBox checkBoxUnit : checkBoxList) {
+                        if (checkBoxUnit.isChecked()) {
+                            try {
+                                addBarToChart(checkBoxUnit.getText().toString());
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-                updateChart();
             }
 
             @Override
@@ -240,7 +236,6 @@ public class HomeFragment extends Fragment {
             checkBox.setId(View.generateViewId());
             checkBox.setText(devise.getString("codeISODevise"));
 
-            //insert in the view
             checkBoxes.add(checkBox);
 
             if (i < 5) {
@@ -279,48 +274,41 @@ public class HomeFragment extends Fragment {
         return sortedDevises;
     }
 
+    private List<CheckBox> getCheckBoxesEnable() {
+        List<CheckBox> checkBoxesEnabled = new ArrayList<>();
 
+        for (CheckBox checkBoxUnit : checkBoxList) {
+            if (checkBoxUnit.isChecked()) {
+                checkBoxesEnabled.add(checkBoxUnit);
+            }
+        }
+
+        return checkBoxesEnabled;
+    }
 
 
 
     private void setCheckboxListener(@NonNull CheckBox checkBox) {
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-
-                List<CheckBox> checkBoxEnabled = new ArrayList<>();
-
-                for (CheckBox checkBoxUnit : checkBoxList) {
-                    if (checkBoxUnit.isChecked()) {
-                        checkBoxEnabled.add(checkBoxUnit);
-                    }
-                }
-                if (checkBoxEnabled.size() > 5) {
+            if (!isChecked) {
+                removeBarFromChart(checkBox.getText().toString());
+                return;
+            }
+            try {
+                List<CheckBox> enabledCheckBoxes = getCheckBoxesEnable();
+                if (enabledCheckBoxes.size() > 5) {
                     Toast.makeText(context,"5 Currencies max", Toast.LENGTH_SHORT).show();
                     checkBox.setChecked(false);
-                }
-                else {
-
-                    barEntriesList.clear();
-
-                    for (CheckBox checkBoxUnit : checkBoxEnabled) {
-                        try {
-                            addBarToChart(checkBoxUnit.getText().toString());
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-
-                    updateChart();
-                    //addBarToChart(checkBox.getText().toString());
-                    //Toast.makeText(context,checkBox.getText() + " CheckBox Checked", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
+                barEntriesList.clear();
+                for (CheckBox checkBoxUnit : enabledCheckBoxes) {
+                    addBarToChart(checkBoxUnit.getText().toString());
+                }
 
-            } else {
-                try {
-                    //Toast.makeText(context, checkBox.getText() + " CheckBox Unchecked", Toast.LENGTH_SHORT).show();
-                    removeBarFromChart(checkBox.getText().toString());
-                } catch (Exception ignored) {}
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
         });
     }
@@ -333,12 +321,16 @@ public class HomeFragment extends Fragment {
             }
         }
 
+
         JSONObject jsonObject = stringJsonObject.get(codeISODevise);
+        assert jsonObject != null;
         double rate = jsonObject.getDouble("taux");
 
         float finalRate = (float) (rate / baseExchangeRate);
         barEntriesList.add(new BarEntry(barEntriesList.size(), finalRate, codeISODevise));
         updateChart();
+
+        return;
     }
 
     private void removeBarFromChart(String codeISODevise) {
