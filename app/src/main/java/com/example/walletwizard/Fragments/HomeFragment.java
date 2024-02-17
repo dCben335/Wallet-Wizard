@@ -1,7 +1,6 @@
 package com.example.walletwizard.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -35,27 +34,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 
 public class HomeFragment extends Fragment {
-    private HashMap<String, JSONObject> stringJsonObject = new HashMap<>();
-    private List<BarEntry> barEntriesList = new ArrayList<>();
+    private final HashMap<String, JSONObject> stringJsonObject = new HashMap<>();
+    private final List<BarEntry> barEntriesList = new ArrayList<>();
     private LoadingScreen loadingScreen;
 
     private BarChart barChart;
     private BarDataSet barDataSet;
-    private BarData barData;
+
+    private List<CheckBox> checkBoxes;
+    private JSONArray devises;
+    private double baseExchangeRate = 1.0;
 
     private Context context;
     private View rootView;
-
-    private List<CheckBox> checkBoxList;
-
-    private JSONArray devises;
-
-    private double baseExchangeRate = 1;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = requireContext();
@@ -102,12 +99,18 @@ public class HomeFragment extends Fragment {
                 .getJSONObject("result")
                 .getJSONArray("devises");
 
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("codeISODevise", "EUR");
+        jsonObject.put("taux", 1.0);
+
+        devises.put(jsonObject);
+
         setCurrencySpinner(devises);
 
-        checkBoxList = createCheckBoxes(devises);
-        List<JSONObject> devisesList = sortCheckedDevicesByRate(checkBoxList);
+        checkBoxes = createCheckBoxes(devises);
+        List<JSONObject> devisesList = sortCheckedDevicesByRate(checkBoxes);
 
-        // Adding new entries
         for (int i = 0; i < 5; i++) {
             JSONObject devise = devisesList.get(i);
             float rate = (float) devise.getDouble("taux");
@@ -125,8 +128,10 @@ public class HomeFragment extends Fragment {
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(16f);
 
-        barData = new BarData(barDataSet);
+        BarData barData = new BarData(barDataSet);
         barChart.setData(barData);
+
+        barChart.getDescription().setEnabled(false);
 
         setLegendsParams();
         setXaxis();
@@ -146,82 +151,54 @@ public class HomeFragment extends Fragment {
     }
 
     private void setXaxis() {
+        List<String> labels = getLabels();
+
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setLabelCount(getLabels().size());
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(getLabels()));
+        xAxis.setLabelCount(labels.size());
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
-    }
-
-
-    private List<String> getLabels() {
-        List<String> labels = new ArrayList<>();
-
-        for (BarEntry entry : barEntriesList) {
-            labels.add(entry.getData().toString());
-        }
-
-        return labels;
     }
 
 
 
     protected void setCurrencySpinner(JSONArray devises) throws JSONException {
         Spinner entitySpinner = rootView.findViewById(R.id.entitySpinner);
-        String[] currencies = extractCodeISODevise(devises);
+        String[] currencies =  extractCodeISODevise(devises);
+        Arrays.sort(currencies);
+
+        int eurPosition = -1;
+        for (int i = 0; i < currencies.length; i++) {
+            if (currencies[i].equals("EUR")) {
+                eurPosition = i;
+                break;
+            }
+        }
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, currencies);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         entitySpinner.setAdapter(spinnerAdapter);
 
-        entitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String deviseSearched = (String) parentView.getItemAtPosition(position);
-                try {
-                    for (int i = 0; i < devises.length(); i++) {
-                        JSONObject devise = devises.getJSONObject(i);
-                        String codeISODevise = devise.getString("codeISODevise");
-                        if (codeISODevise.equals(deviseSearched)) {
-                            baseExchangeRate = devise.getDouble("taux");
-                            break;
-                        }
-                        barEntriesList.clear();
-                    }
-
-                    for (CheckBox checkBoxUnit : checkBoxList) {
-                        if (checkBoxUnit.isChecked()) {
-                            try {
-                                addBarToChart(checkBoxUnit.getText().toString());
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {}
-        });
-    }
-
-
-
-    private static String[] extractCodeISODevise(JSONArray jsonArray) throws JSONException {
-        String[] currencies = new String[jsonArray.length()];
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject devise = jsonArray.getJSONObject(i);
-            String codeISODevise = devise.getString("codeISODevise");
-            currencies[i] = codeISODevise;
+        // Auto-select EUR value
+        if (eurPosition != -1) {
+            entitySpinner.setSelection(eurPosition);
         }
 
-        return currencies;
+        setSpinnerListener(entitySpinner);
     }
 
+
+
+    private double getBaseExchangeRate(String deviseSearched) throws JSONException {
+        for (int i = 0; i < devises.length(); i++) {
+            JSONObject devise = devises.getJSONObject(i);
+            String codeISODevise = devise.getString("codeISODevise");
+            if (codeISODevise.equals(deviseSearched)) {
+                return devise.getDouble("taux");
+            }
+        }
+        return 1.0;
+    }
 
     protected List<CheckBox> createCheckBoxes(JSONArray devises) throws JSONException {
         GridLayout checkBoxLayout = rootView.findViewById(R.id.checkBoxLayout);
@@ -264,7 +241,6 @@ public class HomeFragment extends Fragment {
                 float secondRate = (float) o2.getDouble("taux");
 
                 return Float.compare(firstRate, secondRate);
-
             } catch (JSONException e) {
                 e.printStackTrace();
                 return 0;
@@ -277,7 +253,7 @@ public class HomeFragment extends Fragment {
     private List<CheckBox> getCheckBoxesEnable() {
         List<CheckBox> checkBoxesEnabled = new ArrayList<>();
 
-        for (CheckBox checkBoxUnit : checkBoxList) {
+        for (CheckBox checkBoxUnit : checkBoxes) {
             if (checkBoxUnit.isChecked()) {
                 checkBoxesEnabled.add(checkBoxUnit);
             }
@@ -286,41 +262,85 @@ public class HomeFragment extends Fragment {
         return checkBoxesEnabled;
     }
 
+    private void setSpinnerListener(Spinner entitySpinner)  {
+        entitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                try {
+                    String deviseSearched = (String) parentView.getItemAtPosition(position);
+                    baseExchangeRate = getBaseExchangeRate(deviseSearched);
+                    regenerateChartAccordingToCheckBoxes();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
 
 
     private void setCheckboxListener(@NonNull CheckBox checkBox) {
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (!isChecked) {
-                removeBarFromChart(checkBox.getText().toString());
-                return;
-            }
+        checkBox.setOnCheckedChangeListener((buttonView, checked) -> {
             try {
-                List<CheckBox> enabledCheckBoxes = getCheckBoxesEnable();
-                if (enabledCheckBoxes.size() > 5) {
-                    Toast.makeText(context,"5 Currencies max", Toast.LENGTH_SHORT).show();
-                    checkBox.setChecked(false);
-                    return;
+                boolean isChecked = regenerateChartAccordingToCheckBoxes();
+                if (!isChecked) {
+                    buttonView.setChecked(false);
                 }
-
-                barEntriesList.clear();
-                for (CheckBox checkBoxUnit : enabledCheckBoxes) {
-                    addBarToChart(checkBoxUnit.getText().toString());
-                }
-
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         });
     }
 
+    private boolean regenerateChartAccordingToCheckBoxes() throws JSONException{
+        List<CheckBox> enabledCheckBoxes = getCheckBoxesEnable();
+        if (enabledCheckBoxes.size() > 5) {
+            Toast.makeText(context,"5 Currencies max", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        barEntriesList.clear();
+
+        for (JSONObject checkBoxUnit : sortCheckedDevicesByRate(enabledCheckBoxes)) {
+            addBarToChart(checkBoxUnit.getString("codeISODevise"));
+        }
+
+        setXaxis();
+        updateChart();
+
+        return true;
+    }
+
+
+    private static String[] extractCodeISODevise(JSONArray jsonArray) throws JSONException {
+        String[] currencies = new String[jsonArray.length()];
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject devise = jsonArray.getJSONObject(i);
+            String codeISODevise = devise.getString("codeISODevise");
+            currencies[i] = codeISODevise;
+        }
+
+        return currencies;
+    }
+
+    private List<String> getLabels() {
+        List<String> labels = new ArrayList<>();
+
+        for (BarEntry entry : barEntriesList) {
+            labels.add(entry.getData().toString());
+        }
+
+        return labels;
+    }
+
     private void addBarToChart(String codeISODevise) throws JSONException {
-        // Si La barre est déjà présente, ne rien faire
         for (BarEntry entry : barEntriesList) {
             if (entry.getData().toString().equals(codeISODevise)) {
                 return;
             }
         }
-
 
         JSONObject jsonObject = stringJsonObject.get(codeISODevise);
         assert jsonObject != null;
@@ -328,22 +348,8 @@ public class HomeFragment extends Fragment {
 
         float finalRate = (float) (rate / baseExchangeRate);
         barEntriesList.add(new BarEntry(barEntriesList.size(), finalRate, codeISODevise));
-        updateChart();
-
-        return;
     }
 
-    private void removeBarFromChart(String codeISODevise) {
-        for (int i = 0; i < barEntriesList.size(); i++) {
-            BarEntry entry = barEntriesList.get(i);
-            if (entry.getData().toString().equals(codeISODevise)) {
-                barEntriesList.remove(i);
-                break;
-            }
-        }
-
-        updateChart();
-    }
 
     private void updateChart() {
         barDataSet.notifyDataSetChanged();
