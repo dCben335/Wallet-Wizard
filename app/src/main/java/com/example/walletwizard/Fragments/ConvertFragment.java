@@ -5,26 +5,24 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.walletwizard.R;
 import com.example.walletwizard.Utils.ApiCall;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Objects;
-
 
 public class ConvertFragment extends Fragment {
     private Context context;
@@ -41,35 +39,33 @@ public class ConvertFragment extends Fragment {
         handleAPICall();
         rootView = inflater.inflate(R.layout.fragment_convert, container, false);
 
-        TextInputLayout inputEditPrice = rootView.findViewById(R.id.input_price);
+        EditText inputEditPrice = rootView.findViewById(R.id.input_edit_price);
         TextView exchangeRateTextView = rootView.findViewById(R.id.exchange_rate);
         TextView resultTextView = rootView.findViewById(R.id.price_after_exchange);
         Spinner fromCurrencySpinner = rootView.findViewById(R.id.spinner_from_currency);
         Spinner toCurrencySpinner = rootView.findViewById(R.id.spinner_to_currency);
 
-
         fromCurrencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-
-
-
-
                 String selectedFromCurrency = (String) parentView.getItemAtPosition(position);
                 String selectedToCurrency = (String) toCurrencySpinner.getSelectedItem();
-
-                String textInputEditText = Objects.requireNonNull(inputEditPrice.getEditText()).getText().toString();
-                Toast.makeText(context, "value: " + textInputEditText, Toast.LENGTH_SHORT).show();
-
-                double inputValue = Double.parseDouble(textInputEditText);
+                String inputValue = inputEditPrice.getText().toString();
 
                 try {
                     double exchangeRate = findExchangeRate(devises, selectedFromCurrency, selectedToCurrency);
-                    Toast.makeText(context, "e: " + exchangeRate, Toast.LENGTH_SHORT).show();
+                    double value = 0;
+                    if (!inputValue.isEmpty()) {
+                        double inputDoubleValue = Double.parseDouble(inputValue);
+                        value = convertCurrency(inputDoubleValue, exchangeRate);
+                    }
 
-                    //resultTextView.setText((int) convertCurrency(inputValue,exchangeRate));
-                    exchangeRateTextView.setText(String.valueOf(exchangeRate));
+                    String exchangeRateResult = "Exchange Rate: " + String.format("%.2f", exchangeRate);
+                    String amountAfterConversionResult = "Amount after conversion: " + String.format("%.2f", value);
+                    exchangeRateTextView.setText(exchangeRateResult);
+                    resultTextView.setText(amountAfterConversionResult);
+
                 } catch (JSONException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -78,21 +74,29 @@ public class ConvertFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Ne rien faire dans ce cas
-            }
+            public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
-        // Ajouter un écouteur d'événements au spinner de destination
         toCurrencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedToCurrency = (String) parentView.getItemAtPosition(position);
                 String selectedFromCurrency = (String) fromCurrencySpinner.getSelectedItem();
+                String inputValue = inputEditPrice.getText().toString();
 
                 try {
                     double exchangeRate = findExchangeRate(devises, selectedFromCurrency, selectedToCurrency);
-                    exchangeRateTextView.setText(String.valueOf(exchangeRate));
+                    double value = 0;
+                    if (!inputValue.isEmpty()) {
+                        double inputDoubleValue = Double.parseDouble(inputValue);
+                        value = convertCurrency(inputDoubleValue, exchangeRate);
+                    }
+
+                    String exchangeRateResult = "Exchange Rate: " + String.format("%.2f", exchangeRate);
+                    String amountAfterConversionResult = "Amount after conversion: " + String.format("%.2f", value);
+                    exchangeRateTextView.setText(exchangeRateResult);
+                    resultTextView.setText(amountAfterConversionResult);
+
                 } catch (JSONException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -106,16 +110,47 @@ public class ConvertFragment extends Fragment {
             }
         });
 
+        inputEditPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Avant que le texte ne change
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                String selectedFromCurrency = (String) fromCurrencySpinner.getSelectedItem();
+                String selectedToCurrency = (String) toCurrencySpinner.getSelectedItem();
+                String inputValue = String.valueOf(s);
+
+                System.out.println(inputValue);
+
+                try {
+                    double exchangeRate = findExchangeRate(devises, selectedFromCurrency, selectedToCurrency);
+                    double value = 0;
+                    if (!inputValue.isEmpty()) {
+                        double inputDoubleValue = Double.parseDouble(inputValue);
+                        value = convertCurrency(inputDoubleValue, exchangeRate);
+                    }
+
+                    String exchangeRateResult = "Exchange Rate: " + String.format("%.2f", exchangeRate);
+                    String amountAfterConversionResult = "Amount after conversion: " + String.format("%.2f", value);
+                    exchangeRateTextView.setText(exchangeRateResult);
+                    resultTextView.setText(amountAfterConversionResult);
+
+                } catch (JSONException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         return rootView;
     }
-
-
-
-
-
-
-
-
 
     protected void handleAPICall() {
         String url = "https://happyapi.fr/api/devises";
@@ -138,9 +173,7 @@ public class ConvertFragment extends Fragment {
                 } else Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
             }
 
-            public void onError(String errorMessage) {
-                // Handle error
-            }
+            public void onError(String errorMessage) {}
         }, context);
     }
 
@@ -167,17 +200,15 @@ public class ConvertFragment extends Fragment {
         return currencies;
     }
 
-    // Supposons que 'exchangeRates' est votre JSONArray contenant les taux de change récupérés de votre API
-
-    // Méthode pour trouver le taux de change entre deux devises
-
-
     private double findExchangeRate(JSONArray exchangeRates, String fromCurrency, String toCurrency) throws JSONException {
+
+        if (fromCurrency.equals(toCurrency)) {
+            return 1.0;
+        }
 
         double fromRate = 0.0;
         double toRate = 0.0;
 
-        // Parcourez les taux de change pour trouver les taux des devises de départ et d'arrivée
         for (int i = 0; i < exchangeRates.length(); i++) {
             JSONObject currency = exchangeRates.getJSONObject(i);
             String codeISODevise = currency.getString("codeISODevise");
@@ -189,17 +220,14 @@ public class ConvertFragment extends Fragment {
                 toRate = taux;
             }
 
-            // Si les deux taux ont été trouvés, sortez de la boucle
             if (fromRate != 0.0 && toRate != 0.0) {
                 break;
             }
         }
 
-        // Calcul du taux de change entre les deux devises
         return toRate / fromRate;
     }
 
-    // Méthode pour convertir une devise source en une devise cible
     private double convertCurrency(double amount, double exchangeRate) {
         return amount * exchangeRate;
     }
