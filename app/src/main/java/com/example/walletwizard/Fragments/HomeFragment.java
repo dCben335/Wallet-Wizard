@@ -1,6 +1,7 @@
 package com.example.walletwizard.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.walletwizard.R;
 import com.example.walletwizard.Utils.ApiCall;
+import com.example.walletwizard.Utils.LoadingScreen;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -39,6 +41,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     private HashMap<String, JSONObject> stringJsonObject = new HashMap<>();
     private List<BarEntry> barEntriesList = new ArrayList<>();
+    private LoadingScreen loadingScreen;
 
     private BarChart barChart;
     private BarDataSet barDataSet;
@@ -54,6 +57,10 @@ public class HomeFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         barChart = rootView.findViewById(R.id.idBarChart);
+
+        loadingScreen = new LoadingScreen(context);
+        loadingScreen.show();
+
         handleAPICall();
     }
 
@@ -68,6 +75,8 @@ public class HomeFragment extends Fragment {
                     try {
                         JSONObject data = ((JSONObject) response);
                         generateChartAndCheckboxes(data);
+                        loadingScreen.dismiss();
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
