@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.GridLayout;
@@ -49,6 +50,12 @@ public class HomeFragment extends Fragment {
 
     private Context context;
     private View rootView;
+
+    private List<CheckBox> checkBoxList;
+
+    private JSONArray devises;
+
+    private double baseExchangeRate = 1;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = requireContext();
@@ -90,14 +97,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void generateChartAndCheckboxes(JSONObject data) throws JSONException {
-        JSONArray devises = data
+        devises = data
                 .getJSONObject("result")
                 .getJSONObject("result")
                 .getJSONArray("devises");
 
         setCurrencySpinner(devises);
 
-        List<CheckBox> checkBoxList = createCheckBoxes(devises);
+        checkBoxList = createCheckBoxes(devises);
         List<JSONObject> devisesList = sortCheckedDevicesByRate(checkBoxList);
 
         // Adding new entries
@@ -113,7 +120,7 @@ public class HomeFragment extends Fragment {
 
 
     private void setChart() {
-        barDataSet = new BarDataSet(barEntriesList, "Exchange rates according to Euro");
+        barDataSet = new BarDataSet(barEntriesList, "Exchange rates");
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(16f);
@@ -166,6 +173,43 @@ public class HomeFragment extends Fragment {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, currencies);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         entitySpinner.setAdapter(spinnerAdapter);
+
+        entitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String deviseSearched = (String) parentView.getItemAtPosition(position);
+                for (int i = 0; i < devises.length(); i++) {
+                    try {
+                        JSONObject devise = devises.getJSONObject(i);
+                        String codeISODevise = devise.getString("codeISODevise");
+
+                        if (codeISODevise.equals(deviseSearched)) {
+                            baseExchangeRate = devise.getDouble("taux");
+                            break;
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                barEntriesList.clear();
+
+                for (CheckBox checkBoxUnit : checkBoxList) {
+                    if (checkBoxUnit.isChecked()) {
+                        try {
+                            addBarToChart(checkBoxUnit.getText().toString());
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+
+                updateChart();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {}
+        });
     }
 
 
@@ -242,18 +286,41 @@ public class HomeFragment extends Fragment {
     private void setCheckboxListener(@NonNull CheckBox checkBox) {
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                try {
-                    addBarToChart(checkBox.getText().toString());
-                    Toast.makeText(context,checkBox.getText() + " CheckBox Checked", Toast.LENGTH_SHORT).show();
 
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                List<CheckBox> checkBoxEnabled = new ArrayList<>();
+
+                for (CheckBox checkBoxUnit : checkBoxList) {
+                    if (checkBoxUnit.isChecked()) {
+                        checkBoxEnabled.add(checkBoxUnit);
+                    }
+                }
+                if (checkBoxEnabled.size() > 5) {
+                    Toast.makeText(context,"5 Currencies max", Toast.LENGTH_SHORT).show();
+                    checkBox.setChecked(false);
+                }
+                else {
+
+                    barEntriesList.clear();
+
+                    for (CheckBox checkBoxUnit : checkBoxEnabled) {
+                        try {
+                            addBarToChart(checkBoxUnit.getText().toString());
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                    updateChart();
+                    //addBarToChart(checkBox.getText().toString());
+                    //Toast.makeText(context,checkBox.getText() + " CheckBox Checked", Toast.LENGTH_SHORT).show();
                 }
 
 
             } else {
-                Toast.makeText(context, checkBox.getText() + " CheckBox Unchecked", Toast.LENGTH_SHORT).show();
-                removeBarFromChart(checkBox.getText().toString());
+                try {
+                    //Toast.makeText(context, checkBox.getText() + " CheckBox Unchecked", Toast.LENGTH_SHORT).show();
+                    removeBarFromChart(checkBox.getText().toString());
+                } catch (Exception ignored) {}
             }
         });
     }
@@ -267,9 +334,10 @@ public class HomeFragment extends Fragment {
         }
 
         JSONObject jsonObject = stringJsonObject.get(codeISODevise);
-        float rate = (float) jsonObject.getDouble("taux");
+        double rate = jsonObject.getDouble("taux");
 
-        barEntriesList.add(new BarEntry(barEntriesList.size(), rate, codeISODevise));
+        float finalRate = (float) (rate / baseExchangeRate);
+        barEntriesList.add(new BarEntry(barEntriesList.size(), finalRate, codeISODevise));
         updateChart();
     }
 
