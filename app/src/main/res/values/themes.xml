@@ -9,7 +9,7 @@
     
     <style name="LoadingScreenAnimation">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
 </resources>

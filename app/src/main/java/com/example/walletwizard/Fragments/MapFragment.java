@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.example.walletwizard.Utils.ApiCall;
+import com.example.walletwizard.Utils.LoadingScreen;
 import com.example.walletwizard.Utils.LocationHandler;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
@@ -45,10 +46,11 @@ public class MapFragment extends Fragment  {
     public LocationHandler locationHandler;
     private Marker ownMarker;
 
+    private LoadingScreen loadingScreen;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = requireContext();
         mapStyleUrl = initiateMapSettings();
-
         return rootView = inflater.inflate(R.layout.fragment_map, container, false);
     }
 
@@ -59,11 +61,15 @@ public class MapFragment extends Fragment  {
         mapView = rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
+        loadingScreen = new LoadingScreen(context);
+        loadingScreen.show();
+
         injectMap(mapStyleUrl);
         locationHandler = new LocationHandler(context, this);
         locationHandler.startLocationUpdates();
 
         rootView.findViewById(R.id.btn_locate).setOnClickListener((View.OnClickListener) v -> {
+            locationHandler.startLocationUpdates();
             setCamera();
         });
     }
@@ -128,6 +134,7 @@ public class MapFragment extends Fragment  {
                         }
 
                         addBankMarkers(bankArray);
+                        loadingScreen.dismiss();
 
                     } else Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
 
@@ -136,10 +143,12 @@ public class MapFragment extends Fragment  {
                     Toast.makeText(context, "All the bank were not displayed, please retry later" , Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
+                loadingScreen.dismiss();
             }
 
             @Override
             public void onError(String errorMessage) {
+                loadingScreen.dismiss();
                 Toast.makeText(context, "API call failed, please try again later" + errorMessage, Toast.LENGTH_SHORT).show();
             }
 

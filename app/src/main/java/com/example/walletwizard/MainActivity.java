@@ -27,22 +27,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadFragment(new HomeFragment(), toRightAnimation, toLeftAnimation);
+        loadFragment(new HomeFragment(), 0);
         setFragmentButtonListeners();
     }
 
     protected void setFragmentButtonListeners() {
-        setFragmentButtonListener(findViewById(R.id.map_button), mapFragment, toRightAnimation, toLeftAnimation);
-        setFragmentButtonListener(findViewById(R.id.home_button), homeFragment, toRightAnimation, toLeftAnimation);
-        setFragmentButtonListener(findViewById(R.id.convert_button), convertFragment, toRightAnimation, toLeftAnimation);
+        setFragmentButtonListener(findViewById(R.id.map_button), mapFragment, toLeftAnimation);
+        setFragmentButtonListener(findViewById(R.id.home_button), homeFragment, 0);
+        setFragmentButtonListener(findViewById(R.id.convert_button), convertFragment, toRightAnimation);
     }
 
 
-    protected void setFragmentButtonListener(ImageButton button, final Fragment fragment, int enterAnimation, int exitAnimation) {
-        button.setOnClickListener((view) -> loadFragment(fragment, enterAnimation,exitAnimation));
+    protected void setFragmentButtonListener(ImageButton button, final Fragment fragment, int enterAnimation) {
+        button.setOnClickListener((view) -> loadFragment(fragment, enterAnimation));
     }
 
-    private void loadFragment(Fragment fragment,int enterAnimation, int exitAnimation) {
+    private void loadFragment(Fragment fragment,int enterAnimation) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(enterAnimation, 0);
         Fragment existingFragment = fragmentManager.findFragmentById(R.id.fragment_container);

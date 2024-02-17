@@ -61,10 +61,8 @@ public class HomeFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         barChart = rootView.findViewById(R.id.idBarChart);
-
         loadingScreen = new LoadingScreen(context);
         loadingScreen.show();
-
         handleAPICall();
     }
 
@@ -79,16 +77,18 @@ public class HomeFragment extends Fragment {
                     try {
                         JSONObject data = ((JSONObject) response);
                         generateChartAndCheckboxes(data);
-                        loadingScreen.dismiss();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+
+                loadingScreen.dismiss();
             }
 
             public void onError(String errorMessage) {
-                // Handle error
+                loadingScreen.dismiss();
+
             }
         }, context);
     }

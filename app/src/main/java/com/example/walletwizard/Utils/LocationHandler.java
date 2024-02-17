@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -43,7 +44,7 @@ public class LocationHandler {
 
         if (!isLocationEnabled()) {
             if (!getLastKnowLocation()) {
-                displayLocationDialog();
+                Toast.makeText(context, "Please enable your Location to get the full feature experience", Toast.LENGTH_SHORT).show();;
             }
             return;
         }
@@ -52,32 +53,6 @@ public class LocationHandler {
         requestLocationUpdates();
     }
 
-
-
-    private void displayLocationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        builder.setMessage("La localisation est recommandée pour utiliser cette partie de l'application");
-        builder.setPositiveButton("Activer", (dialog, which) -> {
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            context.startActivity(intent);
-            dialog.dismiss();
-        });
-
-        builder.setNegativeButton("Continuer", (dialog, which) -> dialog.dismiss());
-        builder.setCancelable(true);
-        builder.show();
-    }
-
-    @SuppressLint("MissingPermission")
-    private void requestLocationUpdates() {
-        locationManager.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER,
-            0,
-            1000,
-            locationListener
-        );
-    }
 
     @SuppressLint("MissingPermission")
     private boolean getLastKnowLocation() {
@@ -88,6 +63,16 @@ public class LocationHandler {
         }
 
         return false;
+    }
+
+    @SuppressLint("MissingPermission")
+    private void requestLocationUpdates() {
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                0,
+                1000,
+                locationListener
+        );
     }
 
     private void requestLocationPermission() {
@@ -118,7 +103,7 @@ public class LocationHandler {
         }
 
         @Override
-        public void onProviderEnabled(String provider) {
+        public void onProviderEnabled(@NonNull String provider) {
             if (mapFragment.isCurrentLocation()) return;
             getLastKnowLocation();
             requestLocationUpdates();
