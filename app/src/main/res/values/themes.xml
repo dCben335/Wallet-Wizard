@@ -6,5 +6,10 @@
         <item name="colorPrimary">@color/primary_600</item>
         <item name="colorPrimaryDark">@color/primary_600</item>
     </style>
+    
+    <style name="LoadingScreenAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    </style>
 
 </resources>

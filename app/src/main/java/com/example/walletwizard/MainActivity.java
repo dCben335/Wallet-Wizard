@@ -19,33 +19,34 @@ public class MainActivity extends AppCompatActivity {
     private final ConvertFragment convertFragment = new ConvertFragment();
     private final FragmentManager fragmentManager = getSupportFragmentManager();
 
-
-
+    private final int toLeftAnimation = R.anim.fragment_enter_animation;
+    private final int toRightAnimation = R.anim.fragment_exit_animation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadFragment(new HomeFragment());
+        loadFragment(new HomeFragment(), toRightAnimation, toLeftAnimation);
         setFragmentButtonListeners();
     }
 
     protected void setFragmentButtonListeners() {
-        setFragmentButtonListener(findViewById(R.id.map_button), mapFragment);
-        setFragmentButtonListener(findViewById(R.id.home_button), homeFragment);
-        setFragmentButtonListener(findViewById(R.id.convert_button), convertFragment);
+        setFragmentButtonListener(findViewById(R.id.map_button), mapFragment, toRightAnimation, toLeftAnimation);
+        setFragmentButtonListener(findViewById(R.id.home_button), homeFragment, toRightAnimation, toLeftAnimation);
+        setFragmentButtonListener(findViewById(R.id.convert_button), convertFragment, toRightAnimation, toLeftAnimation);
     }
 
 
-    protected void setFragmentButtonListener(ImageButton button, final Fragment fragment) {
-        button.setOnClickListener((view) -> loadFragment(fragment));
+    protected void setFragmentButtonListener(ImageButton button, final Fragment fragment, int enterAnimation, int exitAnimation) {
+        button.setOnClickListener((view) -> loadFragment(fragment, enterAnimation,exitAnimation));
     }
 
-    private void loadFragment(Fragment fragment) {
+    private void loadFragment(Fragment fragment,int enterAnimation, int exitAnimation) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
+        fragmentTransaction.setCustomAnimations(enterAnimation, 0);
         Fragment existingFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+
         if (existingFragment != null && existingFragment.getClass().equals(fragment.getClass())) {
             // If the fragment is already added, just show it
             fragmentTransaction.show(existingFragment);

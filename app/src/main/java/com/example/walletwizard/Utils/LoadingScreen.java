@@ -1,17 +1,10 @@
 package com.example.walletwizard.Utils;
 
-
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-
 import com.example.walletwizard.R;
-
 import java.util.Objects;
 
 public class LoadingScreen{
@@ -25,6 +18,7 @@ public class LoadingScreen{
         dialog.setContentView(R.layout.loading_screen);
         setFullScreenLayout();
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.footer_bg);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.LoadingScreenAnimation;
     }
 
 
@@ -35,6 +29,8 @@ public class LoadingScreen{
     public void dismiss() {
         dialog.dismiss();
     }
+
+
 
     private void setFullScreenLayout() {
         Window window = dialog.getWindow();
