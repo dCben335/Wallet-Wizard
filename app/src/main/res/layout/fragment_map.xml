@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        />
+    />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_locate"
@@ -22,7 +23,7 @@
         android:src="@drawable/locate_me"
         android:contentDescription="locate me"
         android:background="@color/primary_900"
-        />
+    />
 
 
 </RelativeLayout>

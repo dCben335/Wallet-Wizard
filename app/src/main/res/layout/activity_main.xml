@@ -23,14 +23,10 @@
         android:layout_above="@+id/footer"
     />
 
-
     <include layout="@layout/component_footer"
         android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
     />
-
-
-
 </RelativeLayout>
