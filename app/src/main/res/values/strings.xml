@@ -5,4 +5,6 @@
     <string name="map_page_name">Map</string>
     <string name="convert_page_name">Convert Money</string>
 
+    <string name="map_page_locate_btn">locate me</string>
+    <string name="map_page_bank_btn">place banks</string>
 </resources>

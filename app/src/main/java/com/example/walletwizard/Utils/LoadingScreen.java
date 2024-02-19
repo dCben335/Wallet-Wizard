@@ -17,7 +17,7 @@ public class LoadingScreen{
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.loading_screen);
         setFullScreenLayout();
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.footer_bg);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.background_footer);
         dialog.getWindow().getAttributes().windowAnimations = R.style.LoadingScreenAnimation;
     }
 

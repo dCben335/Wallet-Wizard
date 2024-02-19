@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true">
 
 
     <com.mapbox.mapboxsdk.maps.MapView
@@ -13,17 +13,32 @@
         android:fillViewport="true"
     />
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_locate"
+        android:id="@+id/btn_bank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/locate_me"
-        android:contentDescription="locate me"
-        android:background="@color/primary_900"
+        android:src="@drawable/icon_bank"
+        app:backgroundTint="@color/primary_100"
+        android:contentDescription="@string/map_page_bank_btn"
     />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_locate"
+        android:layout_below="@+id/btn_bank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icon_locate_me"
+        app:backgroundTint="@color/primary_100"
+        android:contentDescription="@string/map_page_locate_btn"
+
+    />
+
+
+
 
 
 </RelativeLayout>

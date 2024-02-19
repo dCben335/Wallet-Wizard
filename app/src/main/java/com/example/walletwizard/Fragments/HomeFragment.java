@@ -40,9 +40,12 @@ import java.util.List;
 
 
 public class HomeFragment extends Fragment {
+    private View rootView;
+    private Context context;
+    private LoadingScreen loadingScreen;
+
     private final HashMap<String, JSONObject> stringJsonObject = new HashMap<>();
     private final List<BarEntry> barEntriesList = new ArrayList<>();
-    private LoadingScreen loadingScreen;
 
     private BarChart barChart;
     private BarDataSet barDataSet;
@@ -51,8 +54,6 @@ public class HomeFragment extends Fragment {
     private JSONArray devises;
     private double baseExchangeRate = 1.0;
 
-    private Context context;
-    private View rootView;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = requireContext();
@@ -88,7 +89,7 @@ public class HomeFragment extends Fragment {
 
             public void onError(String errorMessage) {
                 loadingScreen.dismiss();
-
+                Toast.makeText(context, "API call failed, please try again later" + errorMessage, Toast.LENGTH_SHORT).show();
             }
         }, context);
     }

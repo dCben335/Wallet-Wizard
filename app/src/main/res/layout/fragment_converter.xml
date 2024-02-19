@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.ConvertFragment">
+    tools:context=".Fragments.ConverterFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,6 +24,7 @@
 
 
     </LinearLayout>
+
     <EditText
         android:id="@+id/input_edit_price"
         android:layout_width="match_parent"

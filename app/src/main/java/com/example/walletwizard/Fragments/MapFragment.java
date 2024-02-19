@@ -1,23 +1,31 @@
 package com.example.walletwizard.Fragments;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.example.walletwizard.Utils.ApiCall;
 import com.example.walletwizard.Utils.LoadingScreen;
 import com.example.walletwizard.Utils.LocationHandler;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
+
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.service.controls.actions.FloatAction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import com.example.walletwizard.R;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -36,24 +44,30 @@ import org.json.JSONObject;
 
 public class MapFragment extends Fragment  {
     private View rootView;
-    private String mapStyleUrl;
     private Context context;
+    private LoadingScreen loadingScreen;
+
+    private String mapStyleUrl;
     private MapView mapView;
     private MapboxMap map;
+
+    private LocationHandler locationHandler;
     private double currentLatitude;
     private double currentLongitude;
-
-    public LocationHandler locationHandler;
     private Marker ownMarker;
 
-    private LoadingScreen loadingScreen;
+    private JSONArray banks;
+
+    private FloatingActionButton locateBtn;
+    private FloatingActionButton bankBtn;
+
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = requireContext();
         mapStyleUrl = initiateMapSettings();
         return rootView = inflater.inflate(R.layout.fragment_map, container, false);
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -62,17 +76,17 @@ public class MapFragment extends Fragment  {
         mapView.onCreate(savedInstanceState);
 
         loadingScreen = new LoadingScreen(context);
-        loadingScreen.show();
 
         injectMap(mapStyleUrl);
+
         locationHandler = new LocationHandler(context, this);
         locationHandler.startLocationUpdates();
 
-        rootView.findViewById(R.id.btn_locate).setOnClickListener((View.OnClickListener) v -> {
-            locationHandler.startLocationUpdates();
-            setCamera();
-        });
+        setLocateBtn();
+        setBankBtn();
     }
+
+
 
     protected String initiateMapSettings() {
         String apiKey = "uBctdXB4pPaJOqBcg0O8";
@@ -90,8 +104,6 @@ public class MapFragment extends Fragment  {
             map = mapboxMap;
             if (isCurrentLocation()) replaceOwnPositionMarker();
             setCamera();
-
-            handleApiCall();
         }));
     }
 
@@ -100,7 +112,7 @@ public class MapFragment extends Fragment  {
             map.removeMarker(ownMarker);
         }
 
-        Icon currentPositionIcon = getMarkerIcon(R.drawable.my_position_marker);
+        Icon currentPositionIcon = getMarkerIcon(R.drawable.marker_own_position);
         ownMarker = createMarker(currentPositionIcon, currentLatitude, currentLongitude, "Votre Position", "");
     }
 
@@ -124,8 +136,8 @@ public class MapFragment extends Fragment  {
         ApiCall.handleRequest(requestType, url, new ApiCall.ApiCallback() {
             @Override
             public void onSuccess(Object response) {
-                try {
-                    if (response instanceof JSONArray) {
+                if (response instanceof JSONArray) {
+                    try {
                         JSONArray bankArray = ((JSONArray) response).getJSONArray(1);
 
                         if (bankArray == null) {
@@ -133,16 +145,16 @@ public class MapFragment extends Fragment  {
                             return;
                         }
 
-                        addBankMarkers(bankArray);
-                        loadingScreen.dismiss();
+                        banks = bankArray;
+                        addBankMarkers();
 
-                    } else Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+                    } catch (JSONException | InterruptedException e) {
+                        Toast.makeText(context, "All the bank were not displayed, please try again later" , Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
 
+                } else Toast.makeText(context, "Something went wrong, please try again later", Toast.LENGTH_SHORT).show();
 
-                } catch (JSONException | InterruptedException e) {
-                    Toast.makeText(context, "All the bank were not displayed, please retry later" , Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
                 loadingScreen.dismiss();
             }
 
@@ -155,7 +167,7 @@ public class MapFragment extends Fragment  {
         }, context);
     }
 
-    private void addBankMarkers(JSONArray banks) throws JSONException, InterruptedException {
+    private void addBankMarkers() throws JSONException, InterruptedException {
         for (int i = 0; i < banks.length(); i++) {
             JSONObject bank = banks.getJSONObject(i);
 
@@ -166,7 +178,7 @@ public class MapFragment extends Fragment  {
             double latitude = convertToDouble(bank.getString("latitude"));
 
             if (isLocation(longitude, latitude) && !TextUtils.isEmpty(title) && !TextUtils.isEmpty(city)) {
-                Icon bankIcon = getMarkerIcon(R.drawable.bank_marker);
+                Icon bankIcon = getMarkerIcon(R.drawable.marker_bank);
                 createMarker(
                         bankIcon,
                         latitude,
@@ -201,7 +213,6 @@ public class MapFragment extends Fragment  {
         );
     }
 
-
     private Icon getMarkerIcon(int src) {
         Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), src);
 
@@ -219,8 +230,29 @@ public class MapFragment extends Fragment  {
                 .snippet(description)
                 .icon(customMarkerIcon);
 
-
         return map.addMarker(markerOptions);
+    }
+
+
+    protected void setLocateBtn() {
+        locateBtn = rootView.findViewById(R.id.btn_locate);
+        locateBtn.setOnClickListener((View.OnClickListener) v -> {
+            locationHandler.startLocationUpdates();
+            setCamera();
+        });
+    }
+
+    protected void setBankBtn() {
+        bankBtn = rootView.findViewById(R.id.btn_bank);
+        bankBtn.setOnClickListener((View.OnClickListener) v -> {
+            if (banks != null) return;
+
+            loadingScreen.show();
+            handleApiCall();
+
+            bankBtn.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.primary_400));
+            setCamera();
+        });
     }
 
     public boolean isCurrentLocation() {

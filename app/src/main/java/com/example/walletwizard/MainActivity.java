@@ -1,14 +1,17 @@
 package com.example.walletwizard;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
-import com.example.walletwizard.Fragments.ConvertFragment;
+import com.example.walletwizard.Fragments.ConverterFragment;
 import com.example.walletwizard.Fragments.HomeFragment;
 import com.example.walletwizard.Fragments.MapFragment;
 
@@ -16,8 +19,11 @@ public class MainActivity extends AppCompatActivity {
 
     private final MapFragment mapFragment = new MapFragment();
     private final HomeFragment homeFragment = new HomeFragment();
-    private final ConvertFragment convertFragment = new ConvertFragment();
+    private final ConverterFragment converterFragment = new ConverterFragment();
     private final FragmentManager fragmentManager = getSupportFragmentManager();
+
+    private RelativeLayout currentContainer;
+    private ImageButton currentButton;
 
     private final int toLeftAnimation = R.anim.fragment_enter_animation;
     private final int toRightAnimation = R.anim.fragment_exit_animation;
@@ -28,18 +34,51 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loadFragment(new HomeFragment(), 0);
-        setFragmentButtonListeners();
+        setFragmentButtons();
+
     }
 
-    protected void setFragmentButtonListeners() {
-        setFragmentButtonListener(findViewById(R.id.map_button), mapFragment, toLeftAnimation);
-        setFragmentButtonListener(findViewById(R.id.home_button), homeFragment, 0);
-        setFragmentButtonListener(findViewById(R.id.convert_button), convertFragment, toRightAnimation);
+    protected void setFragmentButtons() {
+        RelativeLayout mapButtonContainer = findViewById(R.id.map_btn_layout);
+        RelativeLayout homeButtonContainer = findViewById(R.id.home_btn_layout);
+        RelativeLayout converterButtonContainer = findViewById(R.id.converter_btn_layout);
+
+        ImageButton mapButton = findViewById(R.id.map_button);
+        ImageButton homeButton = findViewById(R.id.home_button);
+        ImageButton converterButton = findViewById(R.id.converter_button);
+
+        setFragmentButtonListener(mapButton, mapButtonContainer, mapFragment, toLeftAnimation);
+        setFragmentButtonListener(homeButton, homeButtonContainer, homeFragment, 0);
+        setFragmentButtonListener(converterButton, converterButtonContainer, converterFragment, toRightAnimation);
+
+        setCurrentButton(homeButtonContainer, homeButton);
+        setCurrentButtonBackground();
     }
 
 
-    protected void setFragmentButtonListener(ImageButton button, final Fragment fragment, int enterAnimation) {
-        button.setOnClickListener((view) -> loadFragment(fragment, enterAnimation));
+    private void setFragmentButtonListener(ImageButton button,RelativeLayout container, final Fragment fragment, int enterAnimation) {
+        button.setOnClickListener((view) -> {
+            loadFragment(fragment, enterAnimation);
+
+            resetCurrentButtonBackground();
+            setCurrentButton(container, button);
+            setCurrentButtonBackground();
+        });
+    }
+
+    private void setCurrentButton(RelativeLayout container, ImageButton button) {
+        currentContainer = container;
+        currentButton = button;
+    }
+
+    private void setCurrentButtonBackground() {
+        currentButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.primary_900));
+        currentContainer.setBackground(ContextCompat.getDrawable(this, R.drawable.background_rounded_100));
+    }
+
+    private void resetCurrentButtonBackground() {
+        currentButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.primary_100));
+        currentContainer.setBackground(ContextCompat.getDrawable(this, R.drawable.background_rounded_transparent));
     }
 
     private void loadFragment(Fragment fragment,int enterAnimation) {

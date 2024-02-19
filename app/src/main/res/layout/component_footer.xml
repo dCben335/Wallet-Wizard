@@ -1,42 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:background="@drawable/footer_bg"
+    android:background="@drawable/background_footer"
     android:gravity="center"
     android:padding="10dp"
-    android:elevation="3dp"
-    >
+    android:elevation="3dp">
 
-    <ImageButton
-        android:id="@+id/map_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    <RelativeLayout
+        android:id="@+id/map_btn_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="35dp"
-        android:background="@drawable/map"
-        android:backgroundTint="@color/primary_100"
-        android:contentDescription="@string/map_page_name"
-    />
+        android:padding="5dp"
+        >
 
-    <ImageButton
-        android:id="@+id/home_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/home"
-        android:backgroundTint="@color/primary_100"
-        android:contentDescription="@string/home_page_name"
-    />
+        <ImageButton
+            android:id="@+id/map_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/icon_map"
+            app:backgroundTint="@color/primary_100"
+            android:contentDescription="@string/map_page_name"
+        />
+    </RelativeLayout>
 
-    <ImageButton
-        android:id="@+id/convert_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+
+
+    <RelativeLayout
+        android:id="@+id/home_btn_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        >
+        <ImageButton
+            android:id="@+id/home_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/icon_home"
+            app:backgroundTint="@color/primary_100"
+            android:contentDescription="@string/home_page_name"
+        />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/converter_btn_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:background="@drawable/converter"
-        android:backgroundTint="@color/primary_100"
-        android:contentDescription="@string/convert_page_name"
-    />
+        android:padding="5dp"
+        >
+
+        <ImageButton
+            android:id="@+id/converter_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/icon_converter"
+            app:backgroundTint="@color/primary_100"
+            android:contentDescription="@string/convert_page_name"
+        />
+    </RelativeLayout>
 
 </LinearLayout>
