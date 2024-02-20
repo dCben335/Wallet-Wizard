@@ -14,58 +14,194 @@
         android:padding="16dp"
         >
 
-        <RelativeLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"
+                android:textAlignment="center"
+                android:textColor="@color/dark"
+                android:elevation="4dp"
+                android:shadowColor="#30000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="4"
+                android:text="@string/home_page_title"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:src="@drawable/icon_home"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="@string/app_logo"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@color/dark"
+                android:layout_marginBottom="16dp"
+                android:text="@string/home_page_description"
+            />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:src="@drawable/image_exchange_rates"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="@string/app_logo"
+                android:layout_gravity="center"
+
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/dark"
+                android:layout_marginTop="8dp"
+                android:textAlignment="center"
+                android:text="@string/home_page_exchange_graph_title"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/dark"
+                android:layout_marginTop="16dp"
+                android:textAlignment="center"
+                android:text="@string/home_page_exchange_graph_description"
+            />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/entityLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             >
 
             <Spinner
+                android:layout_gravity="center"
                 android:id="@+id/entitySpinner"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true"
+                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-            />
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+
+                />
 
             <GridLayout
                 android:id="@+id/checkBoxLayout"
-                android:paddingTop="10dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/entitySpinner"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:columnCount="4"
                 android:orientation="horizontal">
             </GridLayout>
 
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/chartLayout"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_below="@+id/entityLayout">
-
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/idBarChart"
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="300dp"
+            />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:layout_marginTop="8dp"
+                android:textAlignment="center"
+                android:textColor="@color/dark"
+                android:text="@string/home_page_exchange_graph_note"
+            />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:layout_marginTop="8dp"
+                android:textAlignment="center"
+                android:textColor="@color/dark"
+                android:text="@string/home_page_converter_description"
+            />
+            <TextView
+                android:id="@+id/currency_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:layout_marginTop="8dp"
+                android:textAlignment="center"
+                android:textColor="@color/primary_900"
+                android:text="@string/home_page_converter_button"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textAlignment="center"
+                android:textColor="@color/dark"
+                android:text="@string/home_page_map_description"
+            />
+            <TextView
+                android:id="@+id/map_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:layout_marginTop="8dp"
+                android:textAlignment="center"
+                android:textColor="@color/primary_900"
+                android:text="@string/home_page_map_button"
             />
         </LinearLayout>
 
-        <Button
+        <TextView
             android:id="@+id/credits_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Access credits page"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="36dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/primary_900"
+            android:text="@string/home_page_credits_access"
         />
-
     </LinearLayout>
-
-
-
 </ScrollView>

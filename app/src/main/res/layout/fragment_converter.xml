@@ -8,64 +8,71 @@
     tools:context=".Fragments.ConverterFragment">
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/converter_hero"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/converter_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/dark"
-                android:layout_centerHorizontal="true"
                 android:textAlignment="center"
-                android:text="@string/converter_page_title"
                 android:textSize="35sp"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/dark"
+                android:elevation="4dp"
+                android:shadowColor="#30000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="4"
+                android:textStyle="bold"
+                android:text="@string/converter_page_title"
             />
 
             <TextView
                 android:id="@+id/converter_description"
-                android:layout_below="@+id/converter_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/dark"
-                android:layout_centerHorizontal="true"
+                android:gravity="center"
                 android:textAlignment="center"
                 android:layout_marginTop="10dp"
+                android:textSize="14sp"
+                android:textColor="@color/dark"
                 android:text="@string/converter_page_description"
             />
 
             <TextView
                 android:id="@+id/converter_after_description"
-                android:layout_below="@+id/converter_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/dark"
-                android:layout_centerHorizontal="true"
+                android:gravity="center"
                 android:textAlignment="center"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"
+                android:textColor="@color/dark"
+                android:textSize="13sp"
                 android:text="@string/converter_page_after_description"
             />
 
-        </RelativeLayout>
+        </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/converter_layout_feature"
-            android:layout_below="@+id/converter_hero"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:orientation="vertical"
             >
 
             <LinearLayout
-                android:id="@+id/layout_select_currencies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -91,8 +98,7 @@
                 android:id="@+id/input_edit_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_select_currencies"
-                android:autofillHints="Enter price2"
+                android:autofillHints="10"
                 android:hint="@string/converter_page_input_placeholder"
                 android:inputType="numberDecimal"
                 android:padding="15dp"
@@ -101,19 +107,21 @@
             />
 
             <TextView
+                android:id="@+id/price_after_exchange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/price_after_exchange"
-                android:layout_below="@+id/input_edit_price"/>
+                android:textColor="@color/primary_900"
+            />
 
             <TextView
+                android:id="@+id/exchange_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/exchange_rate"
-                android:layout_below="@+id/price_after_exchange"/>
+                android:textColor="@color/dark"
+            />
 
-        </RelativeLayout>
+        </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 </ScrollView>
 

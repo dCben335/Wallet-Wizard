@@ -77,6 +77,8 @@ public class HomeFragment extends Fragment {
             }
         }
         setCreditsButton();
+        setCurrencyButton();
+        setMapButton();
     }
 
 
@@ -364,10 +366,27 @@ public class HomeFragment extends Fragment {
 
     private void setCreditsButton() {
         rootView.findViewById(R.id.credits_button).setOnClickListener(v -> {
-            // Call the loadFragment method of the activity and pass the CreditsFragment
             if (getActivity() != null) {
                 MainActivity mainActivity = ((MainActivity) getActivity());
-                mainActivity.changeFragment(null, null, new CreditsFragment(), 0);
+                mainActivity.changeFragment(null, null, mainActivity.creditsFragment, 0);
+            }
+        });
+    }
+
+    private void setCurrencyButton() {
+        rootView.findViewById(R.id.currency_button).setOnClickListener(v -> {
+            if (getActivity() != null) {
+                MainActivity mainActivity = ((MainActivity) getActivity());
+                mainActivity.changeFragment(mainActivity.converterButtonContainer, mainActivity.converterButton, mainActivity.converterFragment, mainActivity.toRightAnimation);
+            }
+        });
+    }
+
+    private void setMapButton() {
+        rootView.findViewById(R.id.map_button).setOnClickListener(v -> {
+            if (getActivity() != null) {
+                MainActivity mainActivity = ((MainActivity) getActivity());
+                mainActivity.changeFragment(mainActivity.mapButtonContainer, mainActivity.mapButton, mainActivity.mapFragment, mainActivity.toLeftAnimation);
             }
         });
     }

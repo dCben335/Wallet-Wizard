@@ -1,15 +1,26 @@
 <resources>
     <string name="app_name">Wallet Wizard</string>
+    <string name="app_logo">Logo Wallet Wizard</string>
     <string name="app_creator_one">Benoît CABOCEL</string>
     <string name="app_creator_two">Antoine BONNEAU</string>
     <string name="app_go_back">go back</string>
 
 
     <string name="home_page_name">Home</string>
-    <string name="home_page_title">Welcome to the Wizard Wallet App</string>
-    <string name="home_page_description">Welcome to Money Convert App! With our app, you can easily explore exchange rates for various currencies and find nearby banks for hassle-free currency exchange.Whether you\'re traveling abroad or managing international transactions, we\'ve got you covered.</string>
-    <string name="home_page_converter_description">Discover our Currency Converter – the ultimate solution for swift and accurate currency conversions.Seamlessly switch between currencies with up-to-date exchange rates. Whether you\'re traveling, shopping online, or managing international finances, our converter simplifies the process.</string>
-    <string name="home_page_converter_button">Convert</string>
+    <string name="home_page_title">Master Your Finances</string>
+    <string name="home_page_description">With our app, you can easily explore exchange rates for various currencies and find nearby banks for hassle-free currency exchange.Whether you\'re traveling abroad or managing international transactions, we\'ve got you covered.</string>
+
+    <string name="home_page_exchange_graph_title">Explore Exchange Rates with Interactive Graphs</string>
+    <string name="home_page_exchange_graph_description">Gain insights into currency trends and fluctuations with our interactive graph feature. Compare exchange rates for different currencies over time, allowing you to make informed decisions about currency exchanges.</string>
+    <string name="home_page_exchange_graph_note">Please note: Exchange rates are rounded to the nearest integer for reading simplicity.</string>
+
+    <string name="home_page_converter_description">To get the most precise exchange rate, discover our Currency Converter – the ultimate solution for swift and accurate currency conversions. Seamlessly switch between currencies with up-to-date exchange rates.</string>
+    <string name="home_page_converter_button">Convert now</string>
+
+    <string name="home_page_map_description">You can also experience the convenience of locating banks in different countries with our interactive map feature. Easily find nearby banks, view their details, and access essential information, all within the app.</string>
+    <string name="home_page_map_button">Experience now</string>
+
+    <string name="home_page_credits_access">Access to credits page</string>
 
 
     <string name="map_page_name">Map</string>
@@ -26,7 +37,7 @@
 
     <string name="credits_page_title">Credits</string>
     <string name="credits_page_created_by">This app was created by:</string>
-    <string name="credits_page_app_text_images_description">The content presented in this app, including text and images, is original and created by the app developers unless otherwise stated.</string>
+    <string name="credits_page_app_text_images_description">The content presented in this app, including text and images, is original and created by the app developers unless otherwise stated. Some images used in this app are taken from free licenses.</string>
 
     <string name="credits_page_api">API Providers:</string>
     <string name="credits_page_api_one">https://happyapi.fr/api/devises</string>

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import com.example.walletwizard.Fragments.ConverterFragment;
+import com.example.walletwizard.Fragments.CreditsFragment;
 import com.example.walletwizard.Fragments.HomeFragment;
 import com.example.walletwizard.Fragments.MapFragment;
 
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     public final MapFragment mapFragment = new MapFragment();
     public final HomeFragment homeFragment = new HomeFragment();
     public final ConverterFragment converterFragment = new ConverterFragment();
+    public final CreditsFragment creditsFragment = new CreditsFragment();
+
 
     private RelativeLayout currentContainer;
     private ImageButton currentButton;
