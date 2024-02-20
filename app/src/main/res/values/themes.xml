@@ -5,6 +5,7 @@
         <item name="actionBarStyle">@color/primary_600</item>
         <item name="colorPrimary">@color/primary_600</item>
         <item name="colorPrimaryDark">@color/primary_600</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
     
     <style name="LoadingScreenAnimation">

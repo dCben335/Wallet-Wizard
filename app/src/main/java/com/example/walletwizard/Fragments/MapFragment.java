@@ -57,6 +57,7 @@ public class MapFragment extends Fragment  {
     private Marker ownMarker;
 
     private JSONArray banks;
+    private boolean banksPlaced = false;
 
     private FloatingActionButton locateBtn;
     private FloatingActionButton bankBtn;
@@ -188,6 +189,8 @@ public class MapFragment extends Fragment  {
                 );
             }
         }
+
+        banksPlaced = true;
     }
 
     private double convertToDouble(String string) {
@@ -245,10 +248,18 @@ public class MapFragment extends Fragment  {
     protected void setBankBtn() {
         bankBtn = rootView.findViewById(R.id.btn_bank);
         bankBtn.setOnClickListener((View.OnClickListener) v -> {
-            if (banks != null) return;
+            if (banksPlaced) return;
 
-            loadingScreen.show();
-            handleApiCall();
+            if (banks != null) {
+                try {
+                    addBankMarkers();
+                } catch (JSONException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                loadingScreen.show();
+                handleApiCall();
+            }
 
             bankBtn.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.primary_400));
             setCamera();
@@ -268,24 +279,28 @@ public class MapFragment extends Fragment  {
     public void onStart() {
         super.onStart();
         mapView.onStart();
+        banksPlaced = false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        banksPlaced = false;
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
+        banksPlaced = false;
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mapView.onStop();
+        banksPlaced = false;
     }
 
     @Override
@@ -298,11 +313,13 @@ public class MapFragment extends Fragment  {
     public void onDestroyView() {
         super.onDestroyView();
         mapView.onDestroy();
+        banksPlaced = false;
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+        banksPlaced = false;
     }
 }

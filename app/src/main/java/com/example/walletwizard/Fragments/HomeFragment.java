@@ -1,7 +1,6 @@
 package com.example.walletwizard.Fragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +16,7 @@ import android.widget.GridLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.walletwizard.MainActivity;
 import com.example.walletwizard.R;
 import com.example.walletwizard.Utils.ApiCall;
 import com.example.walletwizard.Utils.LoadingScreen;
@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
     private BarDataSet barDataSet;
 
     private List<CheckBox> checkBoxes;
-    private JSONArray devises;
+    private JSONArray devises = null;
     private double baseExchangeRate = 1.0;
 
 
@@ -61,10 +61,22 @@ public class HomeFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         barChart = rootView.findViewById(R.id.idBarChart);
-        loadingScreen = new LoadingScreen(context);
-        loadingScreen.show();
-        handleAPICall();
+
+
+        if (devises == null) {
+            loadingScreen = new LoadingScreen(context);
+            loadingScreen.show();
+            handleAPICall();
+        } else {
+            try {
+                generateChartAndCheckboxes();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        setCreditsButton();
     }
 
 
@@ -77,8 +89,8 @@ public class HomeFragment extends Fragment {
                 if (response instanceof JSONObject) {
                     try {
                         JSONObject data = ((JSONObject) response);
-                        generateChartAndCheckboxes(data);
-
+                        setDevises(data);
+                        generateChartAndCheckboxes();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -94,19 +106,7 @@ public class HomeFragment extends Fragment {
         }, context);
     }
 
-    private void generateChartAndCheckboxes(JSONObject data) throws JSONException {
-        devises = data
-                .getJSONObject("result")
-                .getJSONObject("result")
-                .getJSONArray("devises");
-
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("codeISODevise", "EUR");
-        jsonObject.put("taux", 1.0);
-
-        devises.put(jsonObject);
-
+    private void generateChartAndCheckboxes() throws JSONException {
         setCurrencySpinner(devises);
 
         checkBoxes = createCheckBoxes(devises);
@@ -122,11 +122,10 @@ public class HomeFragment extends Fragment {
         setChart();
     }
 
-
     private void setChart() {
         barDataSet = new BarDataSet(barEntriesList, "Exchange rates");
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextColor(R.color.dark);
         barDataSet.setValueTextSize(16f);
 
         BarData barData = new BarData(barDataSet);
@@ -144,7 +143,7 @@ public class HomeFragment extends Fragment {
         Legend legend = barChart.getLegend();
         legend.setForm(Legend.LegendForm.SQUARE);
         legend.setTextSize(12f);
-        legend.setTextColor(Color.BLACK);
+        legend.setTextColor(R.color.dark);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -160,8 +159,6 @@ public class HomeFragment extends Fragment {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
     }
-
-
 
     protected void setCurrencySpinner(JSONArray devises) throws JSONException {
         Spinner entitySpinner = rootView.findViewById(R.id.entitySpinner);
@@ -188,8 +185,6 @@ public class HomeFragment extends Fragment {
         setSpinnerListener(entitySpinner);
     }
 
-
-
     private double getBaseExchangeRate(String deviseSearched) throws JSONException {
         for (int i = 0; i < devises.length(); i++) {
             JSONObject devise = devises.getJSONObject(i);
@@ -213,7 +208,7 @@ public class HomeFragment extends Fragment {
             CheckBox checkBox = new CheckBox(context);
             checkBox.setId(View.generateViewId());
             checkBox.setText(devise.getString("codeISODevise"));
-
+            checkBox.setTextColor(getResources().getColor(R.color.dark));
             checkBoxes.add(checkBox);
 
             if (i < 5) {
@@ -226,7 +221,6 @@ public class HomeFragment extends Fragment {
 
         return checkBoxes;
     }
-
 
     protected List<JSONObject> sortCheckedDevicesByRate(List<CheckBox> checkBoxList) {
         List<JSONObject> sortedDevises = new ArrayList<>();
@@ -280,7 +274,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-
     private void setCheckboxListener(@NonNull CheckBox checkBox) {
         checkBox.setOnCheckedChangeListener((buttonView, checked) -> {
             try {
@@ -312,7 +305,6 @@ public class HomeFragment extends Fragment {
 
         return true;
     }
-
 
     private static String[] extractCodeISODevise(JSONArray jsonArray) throws JSONException {
         String[] currencies = new String[jsonArray.length()];
@@ -351,9 +343,34 @@ public class HomeFragment extends Fragment {
         barEntriesList.add(new BarEntry(barEntriesList.size(), finalRate, codeISODevise));
     }
 
-
     private void updateChart() {
         barDataSet.notifyDataSetChanged();
         barChart.invalidate();
     }
+
+    protected void setDevises(JSONObject data) throws JSONException {
+        devises = data
+                .getJSONObject("result")
+                .getJSONObject("result")
+                .getJSONArray("devises");
+
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("codeISODevise", "EUR");
+        jsonObject.put("taux", 1.0);
+
+        devises.put(jsonObject);
+    }
+
+    private void setCreditsButton() {
+        rootView.findViewById(R.id.credits_button).setOnClickListener(v -> {
+            // Call the loadFragment method of the activity and pass the CreditsFragment
+            if (getActivity() != null) {
+                MainActivity mainActivity = ((MainActivity) getActivity());
+                mainActivity.changeFragment(null, null, new CreditsFragment(), 0);
+            }
+        });
+    }
+
+
 }

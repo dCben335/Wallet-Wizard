@@ -31,7 +31,6 @@ import java.util.Arrays;
 public class ConverterFragment extends Fragment {
     private View rootView;
     private Context context;
-    private LoadingScreen loadingScreen;
 
     private JSONArray devises = null;
 
@@ -52,9 +51,17 @@ public class ConverterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setFields();
 
-        loadingScreen = new LoadingScreen(context);
-        loadingScreen.show();
-        handleAPICall();
+        if (devises == null) {
+            handleAPICall();
+        } else {
+            try {
+                setCurrencySpinner(devises, fromCurrencySpinner, "EUR");
+                setCurrencySpinner(devises, toCurrencySpinner, "USD");
+                setInputListener(inputEditPrice);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     protected void setFields() {
@@ -86,15 +93,10 @@ public class ConverterFragment extends Fragment {
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-
-
                 } else Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
-
-                loadingScreen.dismiss();
             }
 
             public void onError(String errorMessage) {
-                loadingScreen.dismiss();
                 Toast.makeText(context, "API call failed, please try again later" + errorMessage, Toast.LENGTH_SHORT).show();
             }
         }, context);

@@ -1,10 +1,47 @@
 <resources>
     <string name="app_name">Wallet Wizard</string>
+    <string name="app_creator_one">Benoît CABOCEL</string>
+    <string name="app_creator_two">Antoine BONNEAU</string>
+    <string name="app_go_back">go back</string>
+
 
     <string name="home_page_name">Home</string>
-    <string name="map_page_name">Map</string>
-    <string name="convert_page_name">Convert Money</string>
+    <string name="home_page_title">Welcome to the Wizard Wallet App</string>
+    <string name="home_page_description">Welcome to Money Convert App! With our app, you can easily explore exchange rates for various currencies and find nearby banks for hassle-free currency exchange.Whether you\'re traveling abroad or managing international transactions, we\'ve got you covered.</string>
+    <string name="home_page_converter_description">Discover our Currency Converter – the ultimate solution for swift and accurate currency conversions.Seamlessly switch between currencies with up-to-date exchange rates. Whether you\'re traveling, shopping online, or managing international finances, our converter simplifies the process.</string>
+    <string name="home_page_converter_button">Convert</string>
 
+
+    <string name="map_page_name">Map</string>
     <string name="map_page_locate_btn">locate me</string>
     <string name="map_page_bank_btn">place banks</string>
+
+
+    <string name="convert_page_name">Convert Money</string>
+    <string name="converter_page_title">Convert your Money</string>
+    <string name="converter_page_description">Effortlessly input your desired amount and select your currencies to instantly see the converted value. Stay informed and make informed decisions with our Currency Converter page.</string>
+    <string name="converter_page_after_description">Experience hassle-free currency conversions at your fingertips!</string>
+    <string name="converter_page_input_placeholder">Enter an amount</string>
+
+
+    <string name="credits_page_title">Credits</string>
+    <string name="credits_page_created_by">This app was created by:</string>
+
+    <string name="credits_page_api">API Providers:</string>
+    <string name="credits_page_api_one">https://happyapi.fr/api/devises</string>
+    <string name="credits_page_api_two">https://api.maptiler.com/maps/</string>
+
+    <string name="credits_page_library_AppCompat">AndroidX AppCompat:</string>
+    <string name="credits_page_library_AppCompat_description">Provides backward-compatible versions of Android framework components.</string>
+
+    <string name="credits_page_library_Volley">Volley:</string>
+    <string name="credits_page_library_Volley_description">An HTTP library that makes networking for Android apps easier and faster.</string>
+
+    <string name="credits_page_library_MapLibre">MapLibre GL Android SDK:</string>
+    <string name="credits_page_library_MapLibre_description">A library for rendering interactive maps on Android using MapLibre GL.</string>
+
+    <string name="credits_page_library_MPAndroidChart">MPAndroidChart:</string>
+    <string name="credits_page_library_MPAndroidChart_description">A charting library for Android applications.</string>
+
+
 </resources>
