@@ -15,17 +15,17 @@ import com.example.walletwizard.Fragments.MapFragment;
 public class MainActivity extends AppCompatActivity {
     private final FragmentManager fragmentManager = getSupportFragmentManager();
 
-    private final MapFragment mapFragment = new MapFragment();
-    private final HomeFragment homeFragment = new HomeFragment();
-    private final ConverterFragment converterFragment = new ConverterFragment();
+    public final MapFragment mapFragment = new MapFragment();
+    public final HomeFragment homeFragment = new HomeFragment();
+    public final ConverterFragment converterFragment = new ConverterFragment();
 
     private RelativeLayout currentContainer;
     private ImageButton currentButton;
+
     public RelativeLayout homeButtonContainer;
     public ImageButton homeButton;
     public RelativeLayout mapButtonContainer;
     public ImageButton mapButton;
-
     public RelativeLayout converterButtonContainer;
     public ImageButton converterButton;
 

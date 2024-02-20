@@ -52,6 +52,7 @@ public class HomeFragment extends Fragment {
 
     private List<CheckBox> checkBoxes;
     private JSONArray devises = null;
+
     private double baseExchangeRate = 1.0;
 
 
@@ -63,10 +64,9 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         barChart = rootView.findViewById(R.id.idBarChart);
-
+        loadingScreen = new LoadingScreen(context);
 
         if (devises == null) {
-            loadingScreen = new LoadingScreen(context);
             loadingScreen.show();
             handleAPICall();
         } else {
@@ -371,6 +371,5 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
 
 }

@@ -12,15 +12,11 @@ import android.view.ViewGroup;
 
 import com.example.walletwizard.MainActivity;
 import com.example.walletwizard.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class CreditsFragment extends Fragment {
     private View rootView;
-    private Context context;
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        context = requireContext();
         return rootView = inflater.inflate(R.layout.fragment_credits, container, false);
     }
 
@@ -35,8 +31,12 @@ public class CreditsFragment extends Fragment {
         rootView.findViewById(R.id.credits_go_back).setOnClickListener(v -> {
             if (getActivity() != null) {
                 MainActivity mainActivity = ((MainActivity) getActivity());
-                mainActivity.changeFragment(mainActivity.homeButtonContainer, mainActivity.homeButton, new CreditsFragment(), 0);
-                requireActivity().onBackPressed();
+                mainActivity.changeFragment(
+                        mainActivity.homeButtonContainer,
+                        mainActivity.homeButton,
+                        mainActivity.homeFragment,
+                        0
+                );
             }
         });
     }
