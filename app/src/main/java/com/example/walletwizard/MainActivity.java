@@ -36,9 +36,17 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loadFragment(new HomeFragment(), 0);
+        loadFragment(homeFragment, 0);
         setFields();
         setFragmentButtons();
+    }
+
+    public void changeFragment(RelativeLayout container, ImageButton button, Fragment fragment, int enterAnimation) {
+        if (currentContainer != null & currentButton != null) resetCurrentButtonBackground();
+        setCurrentButton(container, button);
+        if (currentContainer != null & currentButton != null) setCurrentButtonBackground();
+
+        loadFragment(fragment, enterAnimation);
     }
 
     protected void setFields() {
@@ -66,13 +74,6 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener((view) -> changeFragment(container, button, fragment, enterAnimation));
     }
 
-    public void changeFragment(RelativeLayout container, ImageButton button, Fragment fragment, int enterAnimation) {
-        if (currentContainer != null & currentButton != null) resetCurrentButtonBackground();
-        setCurrentButton(container, button);
-        if (currentContainer != null & currentButton != null) setCurrentButtonBackground();
-
-        loadFragment(fragment, enterAnimation);
-    }
 
     private void setCurrentButton(RelativeLayout container, ImageButton button) {
         currentContainer = container;
