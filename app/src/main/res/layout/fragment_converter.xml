@@ -18,7 +18,8 @@
             android:id="@+id/converter_hero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/converter_title"

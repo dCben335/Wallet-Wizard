@@ -39,9 +39,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/credits_page_app_text_images_description"
-                android:textSize="16sp"
+                android:textSize="14sp"
+                android:textColor="@color/dark"
                 android:layout_marginBottom="16dp"
+                android:text="@string/credits_page_app_text_images_description"
             />
 
             <LinearLayout
@@ -53,24 +54,30 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/credits_page_created_by"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:textColor="@color/dark"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/credits_page_created_by"
+                    />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/dark"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/app_creator_one"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
+                    />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/dark"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/app_creator_two"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="16dp"/>
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -82,23 +89,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/credits_page_api"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
+                    android:textColor="@color/dark"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/credits_page_api_one"
-                    android:textSize="16sp"
+                    android:textSize="13sp"
+                    android:textColor="@color/dark"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/credits_page_api_two"
-                    android:textSize="16sp"
+                    android:textSize="13sp"
+                    android:textColor="@color/dark"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/credits_page_api_three"
+                    android:textSize="13sp"
+                    android:textColor="@color/dark"
                     android:layout_marginBottom="16dp"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -109,63 +128,79 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/credits_page_library_AppCompat"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/dark"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/credits_page_library_AppCompat_description"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="16dp"/>
+                    />
 
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/credits_page_library_Volley"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/dark"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/credits_page_library_Volley_description"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="16dp"/>
+                    />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/dark"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/credits_page_library_MapLibre"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/dark"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/credits_page_library_MapLibre_description"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="16dp"/>
+                    />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/credits_page_library_MPAndroidChart"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
+                    android:textColor="@color/dark"
                     android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/credits_page_library_MPAndroidChart"
+                    />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/dark"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/credits_page_library_MPAndroidChart_description"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="16dp"/>
+                    />
 
             </LinearLayout>
         </LinearLayout>

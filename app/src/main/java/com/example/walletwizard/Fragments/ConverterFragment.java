@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.walletwizard.R;
 import com.example.walletwizard.Utils.ApiCall;
-import com.example.walletwizard.Utils.LoadingScreen;
 
 import org.json.JSONArray;
 import org.json.JSONException;

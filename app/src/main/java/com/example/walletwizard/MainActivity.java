@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected void setFragmentButtons() {
         setFragmentButtonListener(homeButton, homeButtonContainer, homeFragment, 0);
-        setFragmentButtonListener(mapButton, mapButtonContainer, mapFragment, toLeftAnimation);
-        setFragmentButtonListener(converterButton, converterButtonContainer, converterFragment, toRightAnimation);
+        setFragmentButtonListener(mapButton, mapButtonContainer, mapFragment, toRightAnimation);
+        setFragmentButtonListener(converterButton, converterButtonContainer, converterFragment, toLeftAnimation);
 
         setCurrentButton(homeButtonContainer, homeButton);
         setCurrentButtonBackground();

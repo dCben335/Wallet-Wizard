@@ -1,7 +1,6 @@
 package com.example.walletwizard.Fragments;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -12,20 +11,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.service.controls.actions.FloatAction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import com.example.walletwizard.R;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -59,11 +54,6 @@ public class MapFragment extends Fragment  {
     private JSONArray banks;
     private boolean banksPlaced = false;
 
-    private FloatingActionButton locateBtn;
-    private FloatingActionButton bankBtn;
-
-
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = requireContext();
         mapStyleUrl = initiateMapSettings();
@@ -83,8 +73,8 @@ public class MapFragment extends Fragment  {
         locationHandler = new LocationHandler(context, this);
         locationHandler.startLocationUpdates();
 
-        setLocateBtn();
-        setBankBtn();
+        setLocateBtnListener();
+        setBankBtnListener();
     }
 
 
@@ -237,17 +227,15 @@ public class MapFragment extends Fragment  {
     }
 
 
-    protected void setLocateBtn() {
-        locateBtn = rootView.findViewById(R.id.btn_locate);
-        locateBtn.setOnClickListener((View.OnClickListener) v -> {
+    protected void setLocateBtnListener() {
+        rootView.findViewById(R.id.btn_locate).setOnClickListener((View.OnClickListener) v -> {
             locationHandler.startLocationUpdates();
             setCamera();
         });
     }
 
-    protected void setBankBtn() {
-        bankBtn = rootView.findViewById(R.id.btn_bank);
-        bankBtn.setOnClickListener((View.OnClickListener) v -> {
+    protected void setBankBtnListener() {
+        rootView.findViewById(R.id.btn_bank).setOnClickListener((View.OnClickListener) v -> {
             if (banksPlaced) return;
 
             if (banks != null) {
@@ -261,7 +249,7 @@ public class MapFragment extends Fragment  {
                 handleApiCall();
             }
 
-            bankBtn.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.primary_400));
+            v.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.primary_400));
             setCamera();
         });
     }

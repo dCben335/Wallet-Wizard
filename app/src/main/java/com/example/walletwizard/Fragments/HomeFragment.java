@@ -377,7 +377,7 @@ public class HomeFragment extends Fragment {
         rootView.findViewById(R.id.currency_button).setOnClickListener(v -> {
             if (getActivity() != null) {
                 MainActivity mainActivity = ((MainActivity) getActivity());
-                mainActivity.changeFragment(mainActivity.converterButtonContainer, mainActivity.converterButton, mainActivity.converterFragment, mainActivity.toRightAnimation);
+                mainActivity.changeFragment(mainActivity.converterButtonContainer, mainActivity.converterButton, mainActivity.converterFragment, mainActivity.toLeftAnimation);
             }
         });
     }
@@ -386,7 +386,7 @@ public class HomeFragment extends Fragment {
         rootView.findViewById(R.id.map_button).setOnClickListener(v -> {
             if (getActivity() != null) {
                 MainActivity mainActivity = ((MainActivity) getActivity());
-                mainActivity.changeFragment(mainActivity.mapButtonContainer, mainActivity.mapButton, mainActivity.mapFragment, mainActivity.toLeftAnimation);
+                mainActivity.changeFragment(mainActivity.mapButtonContainer, mainActivity.mapButton, mainActivity.mapFragment, mainActivity.toRightAnimation);
             }
         });
     }

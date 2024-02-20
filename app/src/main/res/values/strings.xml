@@ -35,6 +35,7 @@
     <string name="converter_page_input_placeholder">Enter an amount</string>
 
 
+
     <string name="credits_page_title">Credits</string>
     <string name="credits_page_created_by">This app was created by:</string>
     <string name="credits_page_app_text_images_description">The content presented in this app, including text and images, is original and created by the app developers unless otherwise stated. Some images used in this app are taken from free licenses.</string>
@@ -42,6 +43,7 @@
     <string name="credits_page_api">API Providers:</string>
     <string name="credits_page_api_one">https://happyapi.fr/api/devises</string>
     <string name="credits_page_api_two">https://api.maptiler.com/maps/</string>
+    <string name="credits_page_api_three">http://api.worldbank.org/v2/country/</string>
 
     <string name="credits_page_library_AppCompat">AndroidX AppCompat:</string>
     <string name="credits_page_library_AppCompat_description">Provides backward-compatible versions of Android framework components.</string>
