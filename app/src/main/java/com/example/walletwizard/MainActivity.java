@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -33,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
     public RelativeLayout converterButtonContainer;
     public ImageButton converterButton;
 
-    public final int toLeftAnimation = R.anim.fragment_enter_animation;
-    public final int toRightAnimation = R.anim.fragment_exit_animation;
+    public final int toLeftAnimation = R.anim.fragment_to_left_animation;
+    public final int toRightAnimation = R.anim.fragment_to_right_animation;
 
     private int currentApiVersion;
 
@@ -98,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
     protected void setFragmentButtonListener(ImageButton button, RelativeLayout container, final Fragment fragment, int enterAnimation) {
         button.setOnClickListener((view) -> changeFragment(container, button, fragment, enterAnimation));
     }
-
 
     private void setCurrentButton(RelativeLayout container, ImageButton button) {
         currentContainer = container;
