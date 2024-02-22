@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setCurrentButtonBackground() {
         currentButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.primary_color));
-        currentContainer.setBackground(ContextCompat.getDrawable(this, R.drawable.background_rounded_100));
+        currentContainer.setBackground(ContextCompat.getDrawable(this, R.drawable.background_rounded_secondary_color));
     }
 
     private void resetCurrentButtonBackground() {

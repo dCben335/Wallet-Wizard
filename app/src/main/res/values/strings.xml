@@ -8,16 +8,16 @@
 
     <string name="home_page_name">Home</string>
     <string name="home_page_title">Master Your Finances</string>
-    <string name="home_page_description">With our app, you can easily explore exchange rates for various currencies and find nearby banks for hassle-free currency exchange.Whether you\'re traveling abroad or managing international transactions, we\'ve got you covered.</string>
+    <string name="home_page_description">With our app, you can easily explore exchange rates for various currencies and find capital banks for hassle-free currency exchange. Whether you\'re traveling abroad or managing international transactions, we\'ve got you covered.</string>
 
     <string name="home_page_exchange_graph_title">Explore Exchange Rates with Interactive Graphs</string>
-    <string name="home_page_exchange_graph_description">Gain insights into currency trends and fluctuations with our interactive graph feature. Compare exchange rates for different currencies over time, allowing you to make informed decisions about currency exchanges.</string>
+    <string name="home_page_exchange_graph_description">Gain insights into currency trends and fluctuations with our interactive graph feature. Compare exchange rates for different currencies, allowing you to make informed decisions about currency exchanges.</string>
     <string name="home_page_exchange_graph_note">Please note: Exchange rates are rounded to the nearest integer for reading simplicity.</string>
 
     <string name="home_page_converter_description">To get the most precise exchange rate, discover our Currency Converter – the ultimate solution for swift and accurate currency conversions. Seamlessly switch between currencies with up-to-date exchange rates.</string>
     <string name="home_page_converter_button">Convert now</string>
 
-    <string name="home_page_map_description">You can also experience the convenience of locating banks in different countries with our interactive map feature. Easily find nearby banks, view their details, and access essential information, all within the app.</string>
+    <string name="home_page_map_description">You can also experience the convenience of locating banks in different countries with our interactive map feature. Easily find capitals banks, view their details, and access essential information, all within the app.</string>
     <string name="home_page_map_button">Experience now</string>
 
     <string name="home_page_credits_access">Access to credits page</string>
