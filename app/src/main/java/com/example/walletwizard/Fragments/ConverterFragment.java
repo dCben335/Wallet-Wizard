@@ -113,7 +113,7 @@ public class ConverterFragment extends Fragment {
 
             public void onError(String errorMessage) {
                 // Display error message if API call fails
-                Toast.makeText(context, "API call failed, please try again later" + errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "API call failed, please try again later", Toast.LENGTH_SHORT).show();
             }
         }, context);
     }

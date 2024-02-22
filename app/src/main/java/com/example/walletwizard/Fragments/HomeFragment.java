@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment {
             public void onError(String errorMessage) {
                 // Remove Loading screen and inform the user
                 loadingScreen.dismiss();
-                Toast.makeText(context, "API call failed, please try again later" + errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "API call failed, please try again later", Toast.LENGTH_SHORT).show();
             }
         }, context);
     }
