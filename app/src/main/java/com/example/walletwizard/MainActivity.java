@@ -107,16 +107,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setCurrentButtonBackground() {
-        currentButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.primary_900));
+        currentButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.primary_color));
         currentContainer.setBackground(ContextCompat.getDrawable(this, R.drawable.background_rounded_100));
     }
 
     private void resetCurrentButtonBackground() {
-        currentButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.primary_100));
+        currentButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.secondary_color));
         currentContainer.setBackground(ContextCompat.getDrawable(this, R.drawable.background_rounded_transparent));
     }
 
-    private void loadFragment(Fragment fragment,int enterAnimation) {
+    private void loadFragment(Fragment fragment, int enterAnimation) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(enterAnimation, 0);
         Fragment existingFragment = fragmentManager.findFragmentById(R.id.fragment_container);

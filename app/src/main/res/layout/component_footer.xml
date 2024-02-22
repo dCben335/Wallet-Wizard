@@ -19,10 +19,10 @@
 
         <ImageButton
             android:id="@+id/map_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="47.5dp"
+            android:layout_height="47.5dp"
             android:background="@drawable/icon_map"
-            app:backgroundTint="@color/primary_100"
+            app:backgroundTint="@color/secondary_color"
             android:contentDescription="@string/map_page_name"
         />
     </RelativeLayout>
@@ -37,10 +37,10 @@
         >
         <ImageButton
             android:id="@+id/home_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="47.5dp"
+            android:layout_height="47.5dp"
             android:background="@drawable/icon_home"
-            app:backgroundTint="@color/primary_100"
+            app:backgroundTint="@color/secondary_color"
             android:contentDescription="@string/home_page_name"
         />
     </RelativeLayout>
@@ -55,10 +55,10 @@
 
         <ImageButton
             android:id="@+id/converter_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="47.5dp"
+            android:layout_height="47.5dp"
             android:background="@drawable/icon_converter"
-            app:backgroundTint="@color/primary_100"
+            app:backgroundTint="@color/secondary_color"
             android:contentDescription="@string/convert_page_name"
         />
     </RelativeLayout>

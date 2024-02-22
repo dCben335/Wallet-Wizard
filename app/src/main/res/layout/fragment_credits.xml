@@ -26,7 +26,7 @@
                 android:textSize="35sp"
                 android:gravity="center"
                 android:layout_marginBottom="16dp"
-                android:textColor="@color/dark"
+                android:textColor="@color/dark_color"
                 android:elevation="4dp"
                 android:shadowColor="#30000000"
                 android:shadowDx="2"
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:textColor="@color/dark"
+                android:textColor="@color/dark_color"
                 android:layout_marginBottom="16dp"
                 android:text="@string/credits_page_app_text_images_description"
             />
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="8dp"
                     android:text="@string/credits_page_created_by"
                     />
@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="8dp"
                     android:text="@string/app_creator_one"
                     />
@@ -74,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="16dp"
                     android:text="@string/app_creator_two"
                     />
@@ -91,7 +91,7 @@
                     android:text="@string/credits_page_api"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/credits_page_api_one"
                     android:textSize="13sp"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/credits_page_api_two"
                     android:textSize="13sp"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/credits_page_api_three"
                     android:textSize="13sp"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="16dp"/>
 
             </LinearLayout>
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
                     android:textStyle="bold"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="8dp"
                     android:text="@string/credits_page_library_AppCompat"
                 />
@@ -139,7 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="16dp"
                     android:text="@string/credits_page_library_AppCompat_description"
                     />
@@ -150,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="8dp"
                     android:text="@string/credits_page_library_Volley"
                     />
@@ -159,7 +159,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="16dp"
                     android:text="@string/credits_page_library_Volley_description"
                     />
@@ -168,7 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"
                     android:text="@string/credits_page_library_MapLibre"
@@ -178,7 +178,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="16dp"
                     android:text="@string/credits_page_library_MapLibre_description"
                     />
@@ -187,7 +187,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"
                     android:text="@string/credits_page_library_MPAndroidChart"
@@ -197,7 +197,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:textColor="@color/dark"
+                    android:textColor="@color/dark_color"
                     android:layout_marginBottom="16dp"
                     android:text="@string/credits_page_library_MPAndroidChart_description"
                     />
@@ -213,7 +213,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/icon_go_back"
-        app:backgroundTint="@color/primary_100"
+        app:backgroundTint="@color/secondary_color"
         android:contentDescription="@string/app_go_back"
         app:layout_anchorGravity="top|start"
     />

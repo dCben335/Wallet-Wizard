@@ -31,7 +31,6 @@ public class LoadingScreen{
     }
 
 
-
     private void setFullScreenLayout() {
         Window window = dialog.getWindow();
         if (window != null) {

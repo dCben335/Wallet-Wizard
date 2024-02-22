@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import com.example.walletwizard.Utils.ApiCall;
 import com.example.walletwizard.Utils.LoadingScreen;
 import com.example.walletwizard.Utils.LocationHandler;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 
@@ -104,6 +103,7 @@ public class MapFragment extends Fragment  {
         }
 
         Icon currentPositionIcon = getMarkerIcon(R.drawable.marker_own_position);
+        ownMarker = createMarker(currentPositionIcon, currentLatitude, currentLongitude, "Votre Position", "");
         ownMarker = createMarker(currentPositionIcon, currentLatitude, currentLongitude, "Votre Position", "");
     }
 
@@ -228,14 +228,14 @@ public class MapFragment extends Fragment  {
 
 
     protected void setLocateBtnListener() {
-        rootView.findViewById(R.id.btn_locate).setOnClickListener((View.OnClickListener) v -> {
+        rootView.findViewById(R.id.btn_locate).setOnClickListener(v -> {
             locationHandler.startLocationUpdates();
             setCamera();
         });
     }
 
     protected void setBankBtnListener() {
-        rootView.findViewById(R.id.btn_bank).setOnClickListener((View.OnClickListener) v -> {
+        rootView.findViewById(R.id.btn_bank).setOnClickListener(v -> {
             if (banksPlaced) return;
 
             if (banks != null) {
@@ -249,7 +249,7 @@ public class MapFragment extends Fragment  {
                 handleApiCall();
             }
 
-            v.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.primary_400));
+            v.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.accent_color));
             setCamera();
         });
     }

@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment {
     private void setChart() {
         barDataSet = new BarDataSet(barEntriesList, "Exchange rates");
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        barDataSet.setValueTextColor(R.color.dark);
+        barDataSet.setValueTextColor(R.color.dark_color);
         barDataSet.setValueTextSize(16f);
 
         BarData barData = new BarData(barDataSet);
@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment {
         Legend legend = barChart.getLegend();
         legend.setForm(Legend.LegendForm.SQUARE);
         legend.setTextSize(12f);
-        legend.setTextColor(R.color.dark);
+        legend.setTextColor(R.color.dark_color);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -210,7 +210,7 @@ public class HomeFragment extends Fragment {
             CheckBox checkBox = new CheckBox(context);
             checkBox.setId(View.generateViewId());
             checkBox.setText(devise.getString("codeISODevise"));
-            checkBox.setTextColor(getResources().getColor(R.color.dark));
+            checkBox.setTextColor(getResources().getColor(R.color.dark_color));
             checkBoxes.add(checkBox);
 
             if (i < 5) {
@@ -390,5 +390,4 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
 }

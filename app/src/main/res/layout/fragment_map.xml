@@ -23,7 +23,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/icon_bank"
-        app:backgroundTint="@color/primary_100"
+        app:backgroundTint="@color/secondary_color"
         android:contentDescription="@string/map_page_bank_btn"
     />
 
@@ -35,7 +35,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/icon_locate_me"
-        app:backgroundTint="@color/primary_100"
+        app:backgroundTint="@color/secondary_color"
         android:contentDescription="@string/map_page_locate_btn"
 
     />
