@@ -155,7 +155,7 @@
                 android:text="@string/home_page_converter_description"
             />
             <TextView
-                android:id="@+id/currency_button"
+                android:id="@+id/converter_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="13sp"

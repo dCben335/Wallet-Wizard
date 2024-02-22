@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         mapButtonContainer = findViewById(R.id.map_btn_layout);
     }
 
-    // Method to setup fragment navigation buttons
+    // Method to setup fragment navigation buttons (also called in Fragment Classes)
     protected void setFragmentButtons() {
         // Set listeners for fragment navigation buttons
         setFragmentButtonListener(homeButton, homeButtonContainer, homeFragment, 0);
